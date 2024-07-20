@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CheckingAccount;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
+        CheckingAccount::factory(20)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'id' => 'testUser',
+            'name' => 'test',
+            'email' => 'test@test.test',
+            'password' => 'testtest'
         ]);
+        CheckingAccount::factory(2)->forUser('testUser')->create();
     }
 }

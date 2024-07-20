@@ -18,8 +18,8 @@ class CheckingAccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid' => fake()->uuid(),
-            'user_id' => User::all()->random()->id,
+            'id' => fake()->uuid(),
+            'user_id' => User::query()->get()->random()->id,
             'name' => fake()->colorName(),
             'currency' => fake()->currencyCode(),
             'amount' => fake()->numberBetween(1000, 10000),

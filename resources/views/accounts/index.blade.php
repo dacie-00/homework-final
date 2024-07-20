@@ -34,7 +34,7 @@
                                         </x-table.data>
                                         <x-table.data>
                                             <a
-                                                href={{route('accounts.show', ['checkingAccount' => $checkingAccount->uuid])}}>
+                                                href={{route('accounts.show', ['checkingAccount' => $checkingAccount->id])}}>
                                                 {{ __('View history') }}
                                             </a>
                                         </x-table.data>
