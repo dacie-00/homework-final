@@ -14,10 +14,10 @@
                             <x-table.head>
                                 <x-table.row>
                                     <x-table.header>
-                                        Account name
+                                        {{ __('Account name') }}
                                     </x-table.header>
                                     <x-table.header>
-                                        Available funds
+                                        {{ __('Available funds') }}
                                     </x-table.header>
                                     <x-table.header>
                                     </x-table.header>
@@ -33,7 +33,10 @@
                                             {{ $checkingAccount->amount . " " .  $checkingAccount->currency}}
                                         </x-table.data>
                                         <x-table.data>
-                                            <a href="accounts/{{ $checkingAccount->uuid }}">View history</a>
+                                            <a
+                                                href={{route('accounts.show', ['checkingAccount' => $checkingAccount->uuid])}}>
+                                                {{ __('View history') }}
+                                            </a>
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach
