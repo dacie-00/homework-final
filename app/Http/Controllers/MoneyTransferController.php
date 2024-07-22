@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class MoneyTransferController extends Controller
@@ -65,21 +66,24 @@ class MoneyTransferController extends Controller
 
         // TODO: do currency conversion with bank API
         // TODO: add note to money transfers
-        $transfer = MoneyTransfer::query()->create([
-            "amount_sent" => $validated["amount"],
-            "currency_sent" => $senderAccount->currency,
-            "amount_received" => $validated["amount"],
-            "currency_received" => $receiverAccount->currency,
-        ]);
-        $transfer->checkingAccounts()->attach(
-            $senderAccount->id,
-            ["type" => "send"]
-        );
-        $transfer->checkingAccounts()->attach(
-            $receiverAccount->id,
-            ["type" => "receive"]
-        );
+        DB::transaction(function () use($validated, $senderAccount, $receiverAccount) {
+            $transfer = MoneyTransfer::query()->create([
+                "amount_sent" => $validated["amount"],
+                "currency_sent" => $senderAccount->currency,
+                "amount_received" => $validated["amount"],
+                "currency_received" => $receiverAccount->currency,
+            ]);
+            $transfer->checkingAccounts()->attach(
+                $senderAccount->id,
+                ["type" => "send"]
+            );
+            $transfer->checkingAccounts()->attach(
+                $receiverAccount->id,
+                ["type" => "receive"]
+            );
+        });
 
+        // TODO: redirect somewhere instead of displaying error on success
         throw ValidationException::withMessages([
             "iban" => "Success!!!!"
         ]);
