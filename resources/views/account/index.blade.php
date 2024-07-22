@@ -1,55 +1,54 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            '{{ $checkingAccount->name }}' transaction history
+            {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    @if(isset($moneyTransfers))
+                    @if (isset($checkingAccounts))
                         <x-table.table>
                             <x-table.head>
                                 <x-table.row>
                                     <x-table.header>
-                                        {{ __('Transaction date') }}
+                                        {{ __('Account') }}
                                     </x-table.header>
                                     <x-table.header>
-                                        {{ __('Sender / Receiver') }}
+                                        {{ __('Name') }}
                                     </x-table.header>
                                     <x-table.header>
-                                        {{ __('Note') }}
+                                        {{ __('Available funds') }}
                                     </x-table.header>
                                     <x-table.header>
-                                        {{ __('Transaction amount') }}
                                     </x-table.header>
                                 </x-table.row>
                             </x-table.head>
                             <x-table.body>
-                                @foreach($moneyTransfers as $moneyTransfer)
+                                @foreach($checkingAccounts as $checkingAccount)
                                     <x-table.row>
-                                        @php($positive = $moneyTransfer->pivot->type === "receive")
                                         <x-table.data>
-                                            {{ $moneyTransfer->created_at }}
+                                            {{ $checkingAccount->iban }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $moneyTransfer->checkingAccounts->first()->user->name }}
-{{--                                            {{ $moneyTransfer->checkingAccounts->where("id", "!==", $checkingAccount->id)->first()->user->name}}--}}
+                                            {{ $checkingAccount->name }}
                                         </x-table.data>
                                         <x-table.data>
-                                            Here's some free money
+                                            {{ number_format($checkingAccount->amount / 100, 2) . " " .  $checkingAccount->currency}}
                                         </x-table.data>
-                                        <x-table.data class="{{$positive ? '!text-green-500' : '!text-red-500' }}">
-                                            {{ $positive ? "+" : "-" }}{{ number_format($moneyTransfer->amount_sent, 2) }}
-                                            {{ $checkingAccount->currency }}
+                                        <x-table.data>
+                                            <a
+                                                href={{route('account.show', ['checkingAccount' => $checkingAccount->id])}}>
+                                                {{ __('View info') }}
+                                            </a>
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach
                             </x-table.body>
+                            @endif
                         </x-table.table>
-                    @endif
                 </div>
             </div>
         </div>

@@ -1,54 +1,56 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            Viewing '{{ $checkingAccount->name }}' bank account
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    @if (isset($checkingAccounts))
+                    <h2 class="font-bold px-6 py-4">Transaction history</h2>
+                    @if(isset($moneyTransfers))
                         <x-table.table>
                             <x-table.head>
                                 <x-table.row>
                                     <x-table.header>
-                                        {{ __('Account') }}
+                                        {{ __('Transaction date') }}
                                     </x-table.header>
                                     <x-table.header>
-                                        {{ __('Name') }}
+                                        {{ __('Sender / Receiver') }}
                                     </x-table.header>
                                     <x-table.header>
-                                        {{ __('Available funds') }}
+                                        {{ __('Note') }}
                                     </x-table.header>
                                     <x-table.header>
+                                        {{ __('Transaction amount') }}
                                     </x-table.header>
                                 </x-table.row>
                             </x-table.head>
                             <x-table.body>
-                                @foreach($checkingAccounts as $checkingAccount)
+                                @foreach($moneyTransfers as $moneyTransfer)
                                     <x-table.row>
+                                        @php($positive = $moneyTransfer->pivot->type === "receive")
                                         <x-table.data>
-                                            {{ $checkingAccount->iban }}
+                                            {{ $moneyTransfer->created_at }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $checkingAccount->name }}
+                                            {{ $moneyTransfer->checkingAccounts->first()->user->name }}
+{{--                                            {{ $moneyTransfer->checkingAccounts->where("id", "!==", $checkingAccount->id)->first()->user->name}}--}}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ number_format($checkingAccount->amount / 100, 2) . " " .  $checkingAccount->currency}}
+                                            Here's some free money
                                         </x-table.data>
-                                        <x-table.data>
-                                            <a
-                                                href={{route('accounts.show', ['checkingAccount' => $checkingAccount->id])}}>
-                                                {{ __('View info') }}
-                                            </a>
+                                        <x-table.data class="{{$positive ? '!text-green-500' : '!text-red-500' }}">
+                                            {{ $positive ? "+" : "-" }}{{ number_format($moneyTransfer->amount_sent, 2) }}
+                                            {{ $checkingAccount->currency }}
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach
                             </x-table.body>
-                            @endif
                         </x-table.table>
+                    @endif
                 </div>
             </div>
         </div>

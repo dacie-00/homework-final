@@ -15,29 +15,16 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
-        return view("accounts.index",
+        return view("account.index",
             [
                 "user" => $user,
                 "checkingAccounts" => $user->checkingAccounts
             ]);
     }
 
-    public function show(CheckingAccount $checkingAccount): View
-    {
-        $moneyTransfers = $checkingAccount->moneyTransfer()
-            ->with('checkingAccounts.user')
-            ->withPivot('type')
-            ->get();
-        return view("accounts.show",
-            [
-                "checkingAccount" => $checkingAccount,
-                "moneyTransfers" => $moneyTransfers,
-            ]);
-    }
-
     public function create(): View
     {
-        return view("accounts.create");
+        return view("account.create");
     }
 
     public function store(Request $request): RedirectResponse
@@ -57,6 +44,19 @@ class AccountController extends Controller
 
         );
 
-        return redirect(route("accounts.index"));
+        return redirect(route("account.index"));
+    }
+
+    public function show(CheckingAccount $checkingAccount): View
+    {
+        $moneyTransfers = $checkingAccount->moneyTransfer()
+            ->with('checkingAccounts.user')
+            ->withPivot('type')
+            ->get();
+        return view("account.show",
+            [
+                "checkingAccount" => $checkingAccount,
+                "moneyTransfers" => $moneyTransfers,
+            ]);
     }
 }
