@@ -26,7 +26,7 @@ class MoneyTransferController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             "account" => "required",
             "iban" => "required",
             "name" => "required",
@@ -34,7 +34,7 @@ class MoneyTransferController extends Controller
         ]);
         // TODO: validate note and amount, and convert amount to cents
 
-        $senderAccount = CheckingAccount::query()->where("iban", "=", $request["account"])->first();
+        $senderAccount = CheckingAccount::query()->where("iban", "=", $validated["account"])->first();
 
         if ($senderAccount === null || $senderAccount->user->name !== Auth::user()->name) {
             throw ValidationException::withMessages([
@@ -42,9 +42,15 @@ class MoneyTransferController extends Controller
             ]);
         }
 
-        $receiverAccount = CheckingAccount::query()->where("iban", "=", $request["iban"])->first();
+        if ($validated['amount'] > $senderAccount->amount) {
+            throw ValidationException::withMessages([
+                "amount" => "The account doesn't have this much money."
+            ]);
+        }
 
-        if ($receiverAccount === null || $receiverAccount->user->name !== $request["name"]) {
+        $receiverAccount = CheckingAccount::query()->where("iban", "=", $validated["iban"])->first();
+
+        if ($receiverAccount === null || $receiverAccount->user->name !== $validated["name"]) {
             throw ValidationException::withMessages([
                 "iban" => "No account with this IBAN and name."
             ]);
@@ -60,9 +66,9 @@ class MoneyTransferController extends Controller
         // TODO: do currency conversion with bank API
         // TODO: add note to money transfers
         $transfer = MoneyTransfer::query()->create([
-            "amount_sent" => $request["amount"],
+            "amount_sent" => $validated["amount"],
             "currency_sent" => $senderAccount->currency,
-            "amount_received" => $request["amount"],
+            "amount_received" => $validated["amount"],
             "currency_received" => $receiverAccount->currency,
         ]);
         $transfer->checkingAccounts()->attach(
