@@ -18,6 +18,7 @@ class CheckingAccount extends Model
     protected $fillable = [
         "name",
         "user_id",
+        "iban",
         "currency",
         "amount",
     ];

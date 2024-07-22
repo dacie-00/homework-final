@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CheckingAccount;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -38,8 +37,9 @@ class AccountController extends Controller
             [
                 "name" => $validated["name"],
                 "user_id" => Auth::id(),
+                "iban" => fake()->iban(),
                 "currency" => strtoupper($validated["currency"]),
-                "amount" => 1000,
+                "amount" => 100000,
             ]
 
         );
