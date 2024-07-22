@@ -19,10 +19,11 @@ class CheckingAccountFactory extends Factory
     {
         return [
             'id' => fake()->uuid(),
+            'iban' => fake()->iban(),
             'user_id' => User::query()->get()->random()->id,
             'name' => fake()->colorName(),
             'currency' => fake()->currencyCode(),
-            'amount' => fake()->numberBetween(1000, 10000),
+            'amount' => fake()->numberBetween(100000, 1000000),
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CheckingAccount;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -23,9 +24,14 @@ class AccountController extends Controller
 
     public function show(CheckingAccount $checkingAccount): View
     {
+        $moneyTransfers = $checkingAccount->moneyTransfer()
+            ->with('checkingAccounts.user')
+            ->withPivot('type')
+            ->get();
         return view("accounts.show",
             [
                 "checkingAccount" => $checkingAccount,
+                "moneyTransfers" => $moneyTransfers,
             ]);
     }
 

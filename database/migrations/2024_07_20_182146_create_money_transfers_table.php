@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('checking_accounts', function (Blueprint $table) {
+        Schema::create('money_transfers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('user_id')->constrained();
-            $table->string('iban');
-            $table->string('name');
-            $table->string('currency');
-            $table->integer('amount');
+            $table->integer("amount_sent");
+            $table->string("currency_sent");
+            $table->integer("amount_received");
+            $table->string("currency_received");
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('checking_accounts');
+        Schema::dropIfExists('money_transfer');
     }
 };
