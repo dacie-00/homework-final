@@ -83,9 +83,6 @@ class MoneyTransferController extends Controller
             );
         });
 
-        // TODO: redirect somewhere instead of displaying error on success
-        throw ValidationException::withMessages([
-            "iban" => "Success!!!!"
-        ]);
+        return redirect(route('account.index'))->with('success', 'The money transfer was successful.');
     }
 }
