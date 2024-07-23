@@ -16,11 +16,11 @@ class CheckingAccount extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        "name",
-        "user_id",
-        "iban",
-        "currency",
-        "amount",
+        'name',
+        'user_id',
+        'iban',
+        'currency',
+        'amount',
     ];
 
     public function user(): belongsTo {

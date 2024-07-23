@@ -15,10 +15,10 @@ class MoneyTransfer extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        "amount_sent",
-        "currency_sent",
-        "amount_received",
-        "currency_received",
+        'amount_sent',
+        'currency_sent',
+        'amount_received',
+        'currency_received',
     ];
 
     public function checkingAccounts(): BelongsToMany

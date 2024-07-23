@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('money_transfers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer("amount_sent");
-            $table->string("currency_sent");
-            $table->integer("amount_received");
-            $table->string("currency_received");
+            $table->integer('amount_sent');
+            $table->string('currency_sent');
+            $table->integer('amount_received');
+            $table->string('currency_received');
             $table->timestamps();
         });
     }

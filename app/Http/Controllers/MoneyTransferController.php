@@ -20,7 +20,7 @@ class MoneyTransferController extends Controller
         return view(
             'money-transfer.create',
             [
-                "checkingAccounts" => $user->checkingAccounts
+                'checkingAccounts' => $user->checkingAccounts
             ]
         );
     }
@@ -28,38 +28,38 @@ class MoneyTransferController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "account" => "required",
-            "iban" => "required",
-            "name" => "required",
-            "amount" => "required|numeric|min:0.01|decimal:0,2",
+            'account' => 'required',
+            'iban' => 'required',
+            'name' => 'required',
+            'amount' => 'required|numeric|min:0.01|decimal:0,2',
         ]);
         // TODO: validate note and amount, and convert amount to cents
 
-        $senderAccount = CheckingAccount::query()->where("iban", "=", $validated["account"])->first();
+        $senderAccount = CheckingAccount::query()->where('iban', '=', $validated['account'])->first();
 
         if ($senderAccount === null || $senderAccount->user->name !== Auth::user()->name) {
             throw ValidationException::withMessages([
-                "account" => "Invalid sender account."
+                'account' => 'Invalid sender account.'
             ]);
         }
 
         if ($validated['amount'] > $senderAccount->amount) {
             throw ValidationException::withMessages([
-                "amount" => "The account doesn't have this much money."
+                'amount' => "The account doesn't have this much money."
             ]);
         }
 
-        $receiverAccount = CheckingAccount::query()->where("iban", "=", $validated["iban"])->first();
+        $receiverAccount = CheckingAccount::query()->where('iban', '=', $validated['iban'])->first();
 
-        if ($receiverAccount === null || $receiverAccount->user->name !== $validated["name"]) {
+        if ($receiverAccount === null || $receiverAccount->user->name !== $validated['name']) {
             throw ValidationException::withMessages([
-                "iban" => "No account with this IBAN and name."
+                'iban' => 'No account with this IBAN and name.'
             ]);
         }
 
         if ($receiverAccount->is($senderAccount)) {
             throw ValidationException::withMessages([
-                "account" => "Sending and receiving accounts cannot be the same account."
+                'account' => 'Sending and receiving accounts cannot be the same account.'
             ]);
         }
 
@@ -68,18 +68,18 @@ class MoneyTransferController extends Controller
         // TODO: add note to money transfers
         DB::transaction(function () use($validated, $senderAccount, $receiverAccount) {
             $transfer = MoneyTransfer::query()->create([
-                "amount_sent" => $validated["amount"],
-                "currency_sent" => $senderAccount->currency,
-                "amount_received" => $validated["amount"],
-                "currency_received" => $receiverAccount->currency,
+                'amount_sent' => $validated['amount'],
+                'currency_sent' => $senderAccount->currency,
+                'amount_received' => $validated['amount'],
+                'currency_received' => $receiverAccount->currency,
             ]);
             $transfer->checkingAccounts()->attach(
                 $senderAccount->id,
-                ["type" => "send"]
+                ['type' => 'send']
             );
             $transfer->checkingAccounts()->attach(
                 $receiverAccount->id,
-                ["type" => "receive"]
+                ['type' => 'receive']
             );
         });
 

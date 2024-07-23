@@ -33,11 +33,11 @@ class DatabaseSeeder extends Seeder
             $pickedAccounts = $accounts->random(2)->pluck('id')->toArray();
             $transfer->checkingAccounts()->attach(
                 $pickedAccounts[0],
-                ["type" => "send"]
+                ['type' => 'send']
             );
             $transfer->checkingAccounts()->attach(
                 $pickedAccounts[1],
-                ["type" => "receive"]
+                ['type' => 'receive']
             );
         }
     }
