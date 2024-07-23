@@ -37,13 +37,12 @@
                                         </x-table.data>
                                         <x-table.data>
                                             {{ $moneyTransfer->checkingAccounts->first()->user->name }}
-{{--                                            {{ $moneyTransfer->checkingAccounts->where("id", "!==", $checkingAccount->id)->first()->user->name}}--}}
                                         </x-table.data>
                                         <x-table.data>
-                                            Here's some free money
+                                            {{ Str::limit($moneyTransfer->note, 40) }}
                                         </x-table.data>
                                         <x-table.data class="{{$positive ? '!text-green-500' : '!text-red-500' }}">
-                                            {{ $positive ? "+" : "-" }}{{ number_format($moneyTransfer->amount_sent, 2) }}
+                                            {{ $positive ? '+' : '-' }}{{ number_format($moneyTransfer->amount_sent, 2) }}
                                             {{ $checkingAccount->currency }}
                                         </x-table.data>
                                     </x-table.row>

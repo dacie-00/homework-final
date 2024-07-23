@@ -22,6 +22,7 @@ class MoneyTransferFactory extends Factory
             'currency_sent' => fake()->currencyCode(),
             'amount_received' => fake()->numberBetween(1000, 10000),
             'currency_received' => fake()->currencyCode(),
+            'note' => fake()->text(),
         ];
     }
 }

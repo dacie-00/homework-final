@@ -32,6 +32,7 @@ class MoneyTransferController extends Controller
             'iban' => 'required',
             'name' => 'required',
             'amount' => 'required|numeric|min:0.01|decimal:0,2',
+            'note' => 'max:200'
         ]);
         // TODO: validate note and amount, and convert amount to cents
 
@@ -72,6 +73,7 @@ class MoneyTransferController extends Controller
                 'currency_sent' => $senderAccount->currency,
                 'amount_received' => $validated['amount'],
                 'currency_received' => $receiverAccount->currency,
+                'note' => $validated['note'],
             ]);
             $transfer->checkingAccounts()->attach(
                 $senderAccount->id,

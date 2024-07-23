@@ -19,6 +19,7 @@ class MoneyTransfer extends Model
         'currency_sent',
         'amount_received',
         'currency_received',
+        'note',
     ];
 
     public function checkingAccounts(): BelongsToMany

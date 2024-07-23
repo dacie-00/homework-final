@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('currency_sent');
             $table->integer('amount_received');
             $table->string('currency_received');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }
