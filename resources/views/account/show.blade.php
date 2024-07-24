@@ -31,19 +31,25 @@
                             <x-table.body>
                                 @foreach($moneyTransfers as $moneyTransfer)
                                     <x-table.row>
-                                        @php($positive = $moneyTransfer->pivot->type === "receive")
+                                        @php($receiving = $moneyTransfer->pivot->type === "receive")
                                         <x-table.data>
                                             {{ $moneyTransfer->created_at }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $moneyTransfer->checkingAccounts->first()->user->name }}
+                                            @if($receiving)
+                                                {{ $moneyTransfer->checkingAccounts->first()->user->name }}
+                                                {{ $moneyTransfer->checkingAccounts->first()->iban }}
+                                            @else
+                                                {{ $moneyTransfer->checkingAccounts->last()->user->name }}
+                                                {{ $moneyTransfer->checkingAccounts->last()->iban }}
+                                            @endif
                                         </x-table.data>
                                         <x-table.data>
                                             {{ Str::limit($moneyTransfer->note, 40) }}
                                         </x-table.data>
-                                        <x-table.data class="{{$positive ? '!text-green-500' : '!text-red-500' }}">
-                                            {{ $positive ? '+' : '-' }}
-                                            {{ number_format(($positive ? $moneyTransfer->amount_received : $moneyTransfer->amount_sent) / 100, 2) }}
+                                        <x-table.data class="{{$receiving ? '!text-green-500' : '!text-red-500' }}">
+                                            {{ $receiving ? '+' : '-' }}
+                                            {{ number_format(($receiving ? $moneyTransfer->amount_received : $moneyTransfer->amount_sent) / 100, 2) }}
                                             {{ $checkingAccount->currency }}
                                         </x-table.data>
                                     </x-table.row>
