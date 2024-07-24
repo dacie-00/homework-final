@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('checking_accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained();
-            $table->string('iban');
+            $table->string('iban')->unique();
             $table->string('name');
             $table->string('currency');
             $table->integer('amount');
