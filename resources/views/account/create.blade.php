@@ -15,9 +15,17 @@
                         <x-text-input id="name" name="name" value="{{ old('name') }}"></x-text-input>
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
-                        <x-input-label for="currency" :value="__('Select a currency')"/>
+                        <x-input-label for="type" :value="__('Account type')"/>
+                        <x-select id="type" name="type">
+                            <option value="checking" selected>Checking</option>
+                            <option value="investment" selected>Investment</option>
+                        </x-select>
+                        <x-input-error :messages="$errors->get('type')" class="mt-2" />
+
+{{--                    TODO: disable currency selection when investment type is selected (probably use js)--}}
+                        <x-input-label for="currency" :value="__('Currency')"/>
                         <x-select id="currency" name="currency">
-                            <option selected>Currency</option>
+                            <option selected>Select a currency</option>
                             @foreach($currencies as $currency)
                                 <option value="{{ $currency }}">
                                     {{ $currency }}

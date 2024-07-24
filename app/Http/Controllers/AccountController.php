@@ -32,6 +32,7 @@ class AccountController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'type' => 'required|string|in:checking,investment',
             'currency' => ['required', new \App\Rules\Currency()],
         ]);
 
@@ -40,8 +41,8 @@ class AccountController extends Controller
                 'name' => $validated['name'],
                 'user_id' => Auth::id(),
                 'iban' => fake()->iban(),
-                'type' => 'checking',
-                'currency' => strtoupper($validated['currency']),
+                'type' => $validated['type'],
+                'currency' => $validated['type'] === 'checking' ? strtoupper($validated['currency']) : 'USD',
                 'amount' => 100000,
             ]
 
