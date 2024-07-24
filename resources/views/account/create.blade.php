@@ -12,7 +12,7 @@
                     <form method="POST" action="{{ route('account.store') }}">
                         @csrf
                         <x-input-label for="name" :value="__('Name')"/>
-                        <x-text-input id="name" name="name"></x-text-input>
+                        <x-text-input id="name" name="name" value="{{ old('name') }}"></x-text-input>
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
                         <x-input-label for="currency" :value="__('Select a currency')"/>
@@ -23,7 +23,6 @@
                                     {{ $currency }}
                                 </option>
                             @endforeach
-                            <option value="hehe">hehe</option>
                         </x-select>
                         <x-input-error :messages="$errors->get('currency')" class="mt-2" />
                         <br>
