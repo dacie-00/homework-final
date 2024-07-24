@@ -9,7 +9,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -25,5 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/money-transfer/create', [MoneyTransferController::class, 'create'])->name('money-transfer.create');
     Route::post('/money-transfer/store', [MoneyTransferController::class, 'store'])->name('money-transfer.store');
 });
+
 
 require __DIR__.'/auth.php';

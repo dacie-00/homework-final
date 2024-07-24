@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Currency;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CheckingAccount>
@@ -22,7 +24,7 @@ class CheckingAccountFactory extends Factory
             'iban' => fake()->iban(),
             'user_id' => User::query()->get()->random()->id,
             'name' => fake()->colorName(),
-            'currency' => fake()->currencyCode(),
+            'currency' => Arr::random(Currency::CURRENCY_SYMBOLS),
             'amount' => fake()->numberBetween(100000, 1000000),
         ];
     }

@@ -42,7 +42,8 @@
                                             {{ Str::limit($moneyTransfer->note, 40) }}
                                         </x-table.data>
                                         <x-table.data class="{{$positive ? '!text-green-500' : '!text-red-500' }}">
-                                            {{ $positive ? '+' : '-' }}{{ number_format($moneyTransfer->amount_sent, 2) }}
+                                            {{ $positive ? '+' : '-' }}
+                                            {{ number_format(($positive ? $moneyTransfer->amount_received : $moneyTransfer->amount_sent) / 100, 2) }}
                                             {{ $checkingAccount->currency }}
                                         </x-table.data>
                                     </x-table.row>

@@ -15,8 +15,16 @@
                         <x-text-input id="name" name="name"></x-text-input>
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
 
-                        <x-input-label for="currency" :value="__('Currency')"/>
-                        <x-text-input id="currency" name="currency"></x-text-input>
+                        <x-input-label for="currency" :value="__('Select a currency')"/>
+                        <x-select id="currency" name="currency">
+                            <option selected>Currency</option>
+                            @foreach($currencies as $currency)
+                                <option value="{{ $currency }}">
+                                    {{ $currency }}
+                                </option>
+                            @endforeach
+                            <option value="hehe">hehe</option>
+                        </x-select>
                         <x-input-error :messages="$errors->get('currency')" class="mt-2" />
                         <br>
                         <x-primary-button>{{ __('Submit') }}</x-primary-button>

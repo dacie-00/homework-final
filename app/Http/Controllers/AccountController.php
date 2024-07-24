@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CheckingAccount;
+use App\Models\Currency;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AccountController extends Controller
 {
@@ -14,37 +16,37 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
-        return view("account.index",
+        return view('account.index',
             [
-                "user" => $user,
-                "checkingAccounts" => $user->checkingAccounts
+                'user' => $user,
+                'checkingAccounts' => $user->checkingAccounts
             ]);
     }
 
     public function create(): View
     {
-        return view("account.create");
+        return view('account.create', ['currencies' => Currency::CURRENCY_SYMBOLS]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            "name" => "required|string|max:255",
-            "currency" => "required|string|size:3",
+            'name' => 'required|string|max:255',
+            'currency' => ['required', new \App\Rules\Currency()],
         ]);
 
         CheckingAccount::query()->create(
             [
-                "name" => $validated["name"],
-                "user_id" => Auth::id(),
-                "iban" => fake()->iban(),
-                "currency" => strtoupper($validated["currency"]),
-                "amount" => 100000,
+                'name' => $validated['name'],
+                'user_id' => Auth::id(),
+                'iban' => fake()->iban(),
+                'currency' => strtoupper($validated['currency']),
+                'amount' => 100000,
             ]
 
         );
 
-        return redirect(route("account.index"));
+        return redirect(route('account.index'));
     }
 
     public function show(CheckingAccount $checkingAccount): View
@@ -53,10 +55,10 @@ class AccountController extends Controller
             ->with('checkingAccounts.user')
             ->withPivot('type')
             ->get();
-        return view("account.show",
+        return view('account.show',
             [
-                "checkingAccount" => $checkingAccount,
-                "moneyTransfers" => $moneyTransfers,
+                'checkingAccount' => $checkingAccount,
+                'moneyTransfers' => $moneyTransfers,
             ]);
     }
 }
