@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CheckingAccount;
+use App\Models\Account;
 use App\Models\Currency;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +19,7 @@ class AccountController extends Controller
         return view('account.index',
             [
                 'user' => $user,
-                'checkingAccounts' => $user->checkingAccounts
+                'accounts' => $user->accounts
             ]);
     }
 
@@ -35,11 +35,12 @@ class AccountController extends Controller
             'currency' => ['required', new \App\Rules\Currency()],
         ]);
 
-        CheckingAccount::query()->create(
+        Account::query()->create(
             [
                 'name' => $validated['name'],
                 'user_id' => Auth::id(),
                 'iban' => fake()->iban(),
+                'type' => 'checking',
                 'currency' => strtoupper($validated['currency']),
                 'amount' => 100000,
             ]
@@ -49,15 +50,15 @@ class AccountController extends Controller
         return redirect(route('account.index'));
     }
 
-    public function show(CheckingAccount $checkingAccount): View
+    public function show(Account $account): View
     {
-        $moneyTransfers = $checkingAccount->moneyTransfer()
-            ->with('checkingAccounts.user')
+        $moneyTransfers = $account->moneyTransfer()
+            ->with('accounts.user')
             ->withPivot('type')
             ->get();
         return view('account.show',
             [
-                'checkingAccount' => $checkingAccount,
+                'account' => $account,
                 'moneyTransfers' => $moneyTransfers,
             ]);
     }

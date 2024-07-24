@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Viewing '{{ $checkingAccount->name }}' bank account
+            Viewing '{{ $account->name }}' bank account
         </h2>
     </x-slot>
 
@@ -37,11 +37,11 @@
                                         </x-table.data>
                                         <x-table.data>
                                             @if($receiving)
-                                                {{ $moneyTransfer->checkingAccounts->first()->user->name }}
-                                                {{ $moneyTransfer->checkingAccounts->first()->iban }}
+                                                {{ $moneyTransfer->accounts->first()->user->name }}
+                                                {{ $moneyTransfer->accounts->first()->iban }}
                                             @else
-                                                {{ $moneyTransfer->checkingAccounts->last()->user->name }}
-                                                {{ $moneyTransfer->checkingAccounts->last()->iban }}
+                                                {{ $moneyTransfer->accounts->last()->user->name }}
+                                                {{ $moneyTransfer->accounts->last()->iban }}
                                             @endif
                                         </x-table.data>
                                         <x-table.data>
@@ -50,7 +50,7 @@
                                         <x-table.data class="{{$receiving ? '!text-green-500' : '!text-red-500' }}">
                                             {{ $receiving ? '+' : '-' }}
                                             {{ number_format(($receiving ? $moneyTransfer->amount_received : $moneyTransfer->amount_sent) / 100, 2) }}
-                                            {{ $checkingAccount->currency }}
+                                            {{ $account->currency }}
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach

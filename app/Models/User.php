@@ -49,8 +49,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function CheckingAccounts(): HasMany
+    public function accounts(): HasMany
     {
-        return $this->hasMany(CheckingAccount::class);
+        return $this->hasMany(Account::class);
     }
 }

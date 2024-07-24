@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\CheckingAccount;
+use App\Models\Account;
 use App\Models\User;
 
 it('creates a new money transfer account', function () {
@@ -17,13 +17,13 @@ it('creates a new money transfer account', function () {
 
 it('transfers money between two accounts', function () {
     $user = User::factory()->create();
-    CheckingAccount::factory()->create([
+    Account::factory()->create([
         'user_id' => $user->id,
         'amount' => 1000,
         'currency' => 'EUR',
         'iban' => 'sender',
     ]);
-    CheckingAccount::factory()->create([
+    Account::factory()->create([
         'user_id' => $user->id,
         'amount' => 0,
         'currency' => 'EUR',

@@ -22,8 +22,8 @@ class MoneyTransfer extends Model
         'note',
     ];
 
-    public function checkingAccounts(): BelongsToMany
+    public function accounts(): BelongsToMany
     {
-        return $this->belongsToMany(CheckingAccount::class);
+        return $this->belongsToMany(Account::class);
     }
 }

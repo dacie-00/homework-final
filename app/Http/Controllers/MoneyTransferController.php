@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CheckingAccount;
+use App\Models\Account;
 use App\Models\MoneyTransfer;
 use App\Models\User;
 use App\Services\ExchangeRateService;
@@ -22,7 +22,7 @@ class MoneyTransferController extends Controller
         return view(
             'money-transfer.create',
             [
-                'checkingAccounts' => $user->checkingAccounts
+                'accounts' => $user->accounts
             ]
         );
     }
@@ -41,7 +41,8 @@ class MoneyTransferController extends Controller
         // TODO: validate note and amount, and convert amount to cents
         // TODO: check if amount is less than or equal to account amount
 
-        $senderAccount = CheckingAccount::query()->where('iban', '=', $validated['account'])->first();
+        /** @var ?Account $senderAccount */
+        $senderAccount = Account::query()->where('iban', '=', $validated['account'])->first();
 
         if ($senderAccount === null || $senderAccount->user->name !== Auth::user()->name) {
             throw ValidationException::withMessages([
@@ -55,9 +56,22 @@ class MoneyTransferController extends Controller
             ]);
         }
 
-        $receiverAccount = CheckingAccount::query()->where('iban', '=', $validated['iban'])->first();
+        /** @var ?Account $receiverAccount */
+        $receiverAccount = Account::query()->where('iban', '=', $validated['iban'])->first();
 
         if ($receiverAccount === null || $receiverAccount->user->name !== $validated['name']) {
+            throw ValidationException::withMessages([
+                'iban' => 'No account with this IBAN and name.'
+            ]);
+        }
+
+        if ($senderAccount->type === 'investment' && $receiverAccount->user->isNot($senderAccount->user)) {
+            throw ValidationException::withMessages([
+                'account' => 'Cannot make transactions from investment account to other users.'
+            ]);
+        }
+
+        if ($receiverAccount->type === 'investment' && $receiverAccount->user->isNot($senderAccount->user)) {
             throw ValidationException::withMessages([
                 'iban' => 'No account with this IBAN and name.'
             ]);
@@ -89,11 +103,11 @@ class MoneyTransferController extends Controller
                 'currency_received' => $receiverAccount->currency,
                 'note' => $validated['note'],
             ]);
-            $transfer->checkingAccounts()->attach(
+            $transfer->accounts()->attach(
                 $senderAccount->id,
                 ['type' => 'send']
             );
-            $transfer->checkingAccounts()->attach(
+            $transfer->accounts()->attach(
                 $receiverAccount->id,
                 ['type' => 'receive']
             );

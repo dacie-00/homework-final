@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CheckingAccount>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Account>
  */
-class CheckingAccountFactory extends Factory
+class AccountFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,8 +21,9 @@ class CheckingAccountFactory extends Factory
     {
         return [
             'id' => fake()->uuid(),
-            'iban' => fake()->iban(),
             'user_id' => User::query()->get()->random()->id,
+            'iban' => fake()->iban(),
+            'type' => 'checking',
             'name' => fake()->colorName(),
             'currency' => Arr::random(Currency::CURRENCY_SYMBOLS),
             'amount' => fake()->numberBetween(100000, 1000000),

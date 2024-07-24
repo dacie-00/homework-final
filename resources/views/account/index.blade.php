@@ -14,12 +14,15 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    @if (isset($checkingAccounts))
+                    @if (isset($accounts))
                         <x-table.table>
                             <x-table.head>
                                 <x-table.row>
                                     <x-table.header>
                                         {{ __('Account') }}
+                                    </x-table.header>
+                                    <x-table.header>
+                                        {{ __('Account type') }}
                                     </x-table.header>
                                     <x-table.header>
                                         {{ __('Name') }}
@@ -32,20 +35,23 @@
                                 </x-table.row>
                             </x-table.head>
                             <x-table.body>
-                                @foreach($checkingAccounts as $checkingAccount)
+                                @foreach($accounts as $account)
                                     <x-table.row>
                                         <x-table.data>
-                                            {{ $checkingAccount->iban }}
+                                            {{ $account->iban }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $checkingAccount->name }}
+                                            {{ ucfirst($account->type) }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ number_format($checkingAccount->amount / 100, 2) . " " .  $checkingAccount->currency}}
+                                            {{ $account->name }}
+                                        </x-table.data>
+                                        <x-table.data>
+                                            {{ number_format($account->amount / 100, 2) . " " .  $account->currency}}
                                         </x-table.data>
                                         <x-table.data>
                                             <a
-                                                href={{route('account.show', ['checkingAccount' => $checkingAccount->id])}}>
+                                                href={{route('account.show', ['account' => $account->id])}}>
                                                 {{ __('View info') }}
                                             </a>
                                         </x-table.data>

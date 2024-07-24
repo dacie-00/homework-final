@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class CheckingAccount extends Model
+class Account extends Model
 {
     use HasFactory, HasUuids;
 
@@ -19,6 +19,7 @@ class CheckingAccount extends Model
         'name',
         'user_id',
         'iban',
+        'type',
         'currency',
         'amount',
     ];

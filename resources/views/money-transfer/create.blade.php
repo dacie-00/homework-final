@@ -14,12 +14,12 @@
                         <x-input-label for="account" :value="__('Account to make transfer from')"/>
                         <x-select id="account" name="account">
                             <option selected>Choose an account</option>
-                            @foreach($checkingAccounts as $checkingAccount)
-                                <option value="{{ $checkingAccount->iban }}">
+                            @foreach($accounts as $account)
+                                <option value="{{ $account->iban }}">
                                     {{
-                                        $checkingAccount->name . ' (' .
-                                        number_format($checkingAccount->amount, 2) . ' ' .
-                                        $checkingAccount->currency . ')'
+                                        $account->name . ' (' .
+                                        number_format($account->amount, 2) . ' ' .
+                                        $account->currency . ')'
                                     }}
                                 </option>
                             @endforeach
