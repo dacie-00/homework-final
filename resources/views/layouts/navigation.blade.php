@@ -26,6 +26,11 @@
                         {{ __('New account') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('crypto.index')" :active="request()->routeIs('crypto.index')">
+                        {{ __('Crypto index') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
