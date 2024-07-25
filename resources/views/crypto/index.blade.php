@@ -14,6 +14,11 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    <form method="GET" action="{{ route('crypto.index') }}" id="search-form">
+                        <x-input-label for="q" :value="__('Search for currency')"/>
+                        <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
+                        <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                    </form>
                     @if (isset($currencies))
                         <x-table.table>
                             <x-table.head>
