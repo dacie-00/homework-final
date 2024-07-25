@@ -1,7 +1,10 @@
 <?php
 
 use App\Models\Account;
+use App\Models\Currency;
 use App\Models\User;
+use App\Services\ExchangeRateService;
+use Mockery\MockInterface;
 
 it('creates a new money transfer account', function () {
     $user = User::factory()->create();
@@ -21,19 +24,27 @@ it('creates a new money transfer account', function () {
 
 it('transfers money between two accounts', function () {
     $user = User::factory()->create();
+    $this->mock(ExchangeRateService::class, function (MockInterface $mock) {
+        $mock
+            ->shouldReceive('get')
+            ->andReturn(Collect([
+                new Currency('FOO', 0.5),
+                new Currency('BAR',  4),
+            ]));
+    });
     Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'sender',
         'type' => 'checking',
         'amount' => 1000,
-        'currency' => 'EUR',
+        'currency' => 'FOO',
     ]);
     Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'receiver',
         'type' => 'checking',
         'amount' => 0,
-        'currency' => 'EUR',
+        'currency' => 'BAR',
     ]);
 
     $response = $this->actingAs($user)->post(
@@ -50,7 +61,7 @@ it('transfers money between two accounts', function () {
     $this->followRedirects($response)->assertStatus(200);
 
     $this->assertDatabaseHas('accounts', ['iban' => 'sender', 'amount' => 900]);
-    $this->assertDatabaseHas('accounts', ['iban' => 'receiver', 'amount' => 100]);
+    $this->assertDatabaseHas('accounts', ['iban' => 'receiver', 'amount' => 800]);
 });
 
 it("does not transfer money to a different user's investment account", function () {
