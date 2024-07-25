@@ -19,7 +19,10 @@
                         <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
                         <x-primary-button>{{ __('Submit') }}</x-primary-button>
                     </form>
-                    @if (isset($currencies))
+
+                    @if (count($currencies) === 0)
+                        <p>No currencies found!</p>
+                    @else
                         <x-table.table>
                             <x-table.head>
                                 <x-table.row>
