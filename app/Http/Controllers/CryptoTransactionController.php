@@ -58,7 +58,7 @@ class CryptoTransactionController extends Controller
         $price = $currency->price() * $validated['amount'];
 
         if ($validated['type'] === 'buy') {
-            if ($price > $account->amount) {
+            if ($price > $account->amount / 100) {
                 throw ValidationException::withMessages([
                     'amount' => "Your account doesn't have enough money.",
                 ]);
