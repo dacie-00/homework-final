@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
+use App\Models\CryptoTransaction;
 use App\Models\MoneyTransfer;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,7 +27,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'testtest'
         ]);
         Account::factory(2)->forUser('testUser')->create();
+        Account::factory(1)->forUser('testUser')->create(['type' => 'investment']);
+
         MoneyTransfer::factory(100)->create();
+        CryptoTransaction::factory(100)->create();
 
         $accounts = Account::all();
         foreach(MoneyTransfer::all() as $transfer) {

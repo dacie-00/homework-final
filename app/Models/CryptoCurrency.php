@@ -6,12 +6,12 @@ namespace App\Models;
 class CryptoCurrency
 {
     private string $symbol;
-    private float $exchangeRate;
+    private float $price;
 
-    public function __construct(string $symbol, float $exchangeRate)
+    public function __construct(string $symbol, float $price)
     {
         $this->symbol = $symbol;
-        $this->exchangeRate = $exchangeRate;
+        $this->price = $price;
     }
 
     public function symbol(): string
@@ -19,8 +19,8 @@ class CryptoCurrency
         return $this->symbol;
     }
 
-    public function exchangeRate(): float
+    public function price(): float
     {
-        return $this->exchangeRate;
+        return $this->price;
     }
 }

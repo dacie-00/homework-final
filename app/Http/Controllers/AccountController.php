@@ -53,14 +53,20 @@ class AccountController extends Controller
 
     public function show(Account $account): View
     {
-        $moneyTransfers = $account->moneyTransfer()
+        $moneyTransfers = $account->moneyTransfers()
             ->with('accounts.user')
             ->withPivot('type')
             ->get();
-        return view('account.show',
-            [
-                'account' => $account,
-                'moneyTransfers' => $moneyTransfers,
-            ]);
+
+        $data = [
+            'account' => $account,
+            'moneyTransfers' => $moneyTransfers,
+        ];
+
+        if ($account->type === 'investment') {
+            $data['cryptoTransactions'] = $account->cryptoTransactions;
+        }
+
+        return view('account.show', $data);
     }
 }

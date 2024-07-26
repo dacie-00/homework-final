@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Services\CryptoCurrencyService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CryptoController extends Controller
 {
@@ -17,7 +19,11 @@ class CryptoController extends Controller
         } else {
             $currencies = $cryptoCurrencyService->getTop();
         }
-        return view('crypto.index', ['currencies' => $currencies]);
+        $accounts = Account::query()
+            ->where('user_id', Auth::id())
+            ->where('type', 'investment')
+            ->get();
+        return view('crypto.index', ['currencies' => $currencies, 'accounts' => $accounts]);
     }
 
     public function show(string $symbol, CryptoCurrencyService $cryptoCurrencyService): View

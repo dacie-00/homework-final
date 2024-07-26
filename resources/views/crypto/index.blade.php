@@ -14,12 +14,52 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    <h2 class="font-bold px-6 py-4">Search</h2>
                     <form method="GET" action="{{ route('crypto.index') }}" id="search-form">
                         <x-input-label for="q" :value="__('Search for currency')"/>
                         <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
                         <x-primary-button>{{ __('Submit') }}</x-primary-button>
                     </form>
+                    <br>
+                    <h2 class="font-bold px-6 py-4">Buy currency</h2>
+                    <form method="POST" action="{{ route('crypto-transaction.store') }}" id="transfer-form">
+                        @csrf
+                        <x-input-label for="account" :value="__('Account to make purchase from')"/>
+                        <x-select id="account" name="account">
+                            <option selected>Choose an account</option>
+                            @foreach($accounts as $account)
+                                <option value="{{ $account->iban }}">
+                                    {{
+                                        $account->name . ' (' .
+                                        number_format($account->amount, 2) . ' ' .
+                                        $account->currency . ')'
+                                    }}
+                                </option>
+                            @endforeach
+                        </x-select>
+                        <x-input-label for="currency" :value="__('Currency')"/>
+                        <x-select id="currency" name="currency">
+                            <option selected>Currency</option>
+                            @foreach($currencies as $currency)
+                                <option value="{{ $currency->symbol() }}">
+                                    {{
+                                        $currency->symbol() . ' (' .
+                                        number_format($currency->price(), 4) . ' USD)'
+                                    }}
+                                </option>
+                            @endforeach
+                        </x-select>
 
+                        <x-input-label for="amount" :value="__('Amount')"/>
+                        <x-text-input type="number" step="0.0001" id="amount" name="amount"
+                                      value="{{ old('amount') }}"></x-text-input>
+                        <x-input-error :messages="$errors->get('amount')" class="mt-2"/>
+
+                        <br>
+                        <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                    </form>
+
+                    <h2 class="font-bold px-6 py-4">Currencies</h2>
                     @if (count($currencies) === 0)
                         <p>No currencies found!</p>
                     @else
@@ -41,7 +81,7 @@
                                             {{ $currency->symbol() }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $currency->exchangeRate() }}
+                                            {{ $currency->price() }}
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach

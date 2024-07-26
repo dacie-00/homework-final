@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CryptoController;
+use App\Http\Controllers\CryptoTransactionController;
 use App\Http\Controllers\MoneyTransferController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
     Route::get('/crypto/{symbol}', [CryptoController::class, 'show'])->name('crypto.show');
+
+    Route::get('/crypto-transaction/store', [CryptoTransactionController::class, 'store'])->name('crypto-transaction.store');
 });
 
 
