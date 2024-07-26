@@ -9,6 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <h2 class="font-bold px-6 py-4">
+                        Account balance - {{ number_format($account->amount / 100, 2) . " {$account->currency}" }}
+                    </h2>
                     @if($account->type === 'investment')
                         <h2 class="font-bold px-6 py-4">Portfolio</h2>
                         <h3 class="font-bold px-6 py-4">Sell currency</h3>
