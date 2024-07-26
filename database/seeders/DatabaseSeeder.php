@@ -7,9 +7,9 @@ use App\Models\CryptoPortfolioItem;
 use App\Models\CryptoTransaction;
 use App\Models\MoneyTransfer;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Database\Factories\MoneyTransferFactory;
 use Illuminate\Database\Seeder;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'id' => 'testUser',
             'name' => 'test',
             'email' => 'test@test.test',
-            'password' => 'testtest'
+            'password' => 'testtest',
         ]);
         Account::factory(2)->forUser('testUser')->create();
         Account::factory(1)->forUser('testUser')->create(['type' => 'investment']);
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 
 
         $accounts = Account::all();
-        foreach(MoneyTransfer::all() as $transfer) {
+        foreach (MoneyTransfer::all() as $transfer) {
             $pickedAccounts = $accounts->random(2)->pluck('id')->toArray();
             $transfer->accounts()->attach(
                 $pickedAccounts[0],

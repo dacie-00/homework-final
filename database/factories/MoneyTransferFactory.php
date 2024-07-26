@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Account;
+use App\Models\MoneyTransfer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MoneyTransfer>
+ * @extends Factory<MoneyTransfer>
  */
 class MoneyTransferFactory extends Factory
 {

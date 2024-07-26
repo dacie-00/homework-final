@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Account;
 use App\Models\Currency;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Account>
+ * @extends Factory<Account>
  */
 class AccountFactory extends Factory
 {
@@ -32,7 +33,7 @@ class AccountFactory extends Factory
 
     public function forUser(string $userId): self
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'user_id' => $userId,
         ]);
     }

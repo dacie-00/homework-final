@@ -6,9 +6,8 @@ use App\Models\Account;
 use App\Models\Currency;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
@@ -19,7 +18,7 @@ class AccountController extends Controller
         return view('account.index',
             [
                 'user' => $user,
-                'accounts' => $user->accounts
+                'accounts' => $user->accounts,
             ]);
     }
 

@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Account;
+use App\Models\CryptoTransaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CryptoTransaction>
+ * @extends Factory<CryptoTransaction>
  */
 class CryptoTransactionFactory extends Factory
 {

@@ -16,7 +16,7 @@ class CryptoTransaction extends Model
         'type',
         'amount',
         'currency',
-        'price'
+        'price',
     ];
 
     public function account(): BelongsTo

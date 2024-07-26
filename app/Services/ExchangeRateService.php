@@ -25,10 +25,10 @@ class ExchangeRateService
 
         // TODO: exception handling
 
-        $currencies = Collect([new Currency("EUR", 1)]);
+        $currencies = Collect([new Currency('EUR', 1)]);
 
         $currenciesData = simplexml_load_string($response->body());
-        foreach($currenciesData->Currencies->Currency as $currencyData) {
+        foreach ($currenciesData->Currencies->Currency as $currencyData) {
             $currencies->add(new Currency((string)$currencyData->ID, (float)$currencyData->Rate));
         }
 

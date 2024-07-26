@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Services\ExchangeRateService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -22,7 +21,7 @@ class MoneyTransferController extends Controller
         return view(
             'money-transfer.create',
             [
-                'accounts' => $user->accounts
+                'accounts' => $user->accounts,
             ]
         );
     }
@@ -34,7 +33,7 @@ class MoneyTransferController extends Controller
             'iban' => 'required',
             'name' => 'required',
             'amount' => 'required|numeric|min:0.01|decimal:0,2',
-            'note' => 'max:200'
+            'note' => 'max:200',
         ]);
         // convert from cents to full amount
         $validated['amount'] *= 100;
@@ -46,13 +45,13 @@ class MoneyTransferController extends Controller
 
         if ($senderAccount === null || $senderAccount->user->name !== Auth::user()->name) {
             throw ValidationException::withMessages([
-                'account' => 'Invalid sender account.'
+                'account' => 'Invalid sender account.',
             ]);
         }
 
         if ($validated['amount'] > $senderAccount->amount) {
             throw ValidationException::withMessages([
-                'amount' => "The account doesn't have this much money."
+                'amount' => "The account doesn't have this much money.",
             ]);
         }
 
@@ -61,25 +60,25 @@ class MoneyTransferController extends Controller
 
         if ($receiverAccount === null || $receiverAccount->user->name !== $validated['name']) {
             throw ValidationException::withMessages([
-                'iban' => 'No account with this IBAN and name.'
+                'iban' => 'No account with this IBAN and name.',
             ]);
         }
 
         if ($senderAccount->type === 'investment' && $receiverAccount->user->isNot($senderAccount->user)) {
             throw ValidationException::withMessages([
-                'account' => 'Cannot make transactions from investment account to other users.'
+                'account' => 'Cannot make transactions from investment account to other users.',
             ]);
         }
 
         if ($receiverAccount->type === 'investment' && $receiverAccount->user->isNot($senderAccount->user)) {
             throw ValidationException::withMessages([
-                'iban' => 'No account with this IBAN and name.'
+                'iban' => 'No account with this IBAN and name.',
             ]);
         }
 
         if ($receiverAccount->is($senderAccount)) {
             throw ValidationException::withMessages([
-                'account' => 'Sending and receiving accounts cannot be the same account.'
+                'account' => 'Sending and receiving accounts cannot be the same account.',
             ]);
         }
 
@@ -90,7 +89,7 @@ class MoneyTransferController extends Controller
 
         $receiveAmount = $validated['amount'] * ($receiverRate / $senderRate);
 
-        DB::transaction(function () use($validated, $senderAccount, $receiverAccount, $receiveAmount) {
+        DB::transaction(function () use ($validated, $senderAccount, $receiverAccount, $receiveAmount) {
             $senderAccount->amount -= $validated['amount'];
             $senderAccount->save();
             $receiverAccount->amount += $receiveAmount;

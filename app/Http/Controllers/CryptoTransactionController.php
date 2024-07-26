@@ -32,7 +32,7 @@ class CryptoTransactionController extends Controller
             $account->user->name !== Auth::user()->name
         ) {
             throw ValidationException::withMessages([
-                'account' => 'Invalid sender account.'
+                'account' => 'Invalid sender account.',
             ]);
         }
 
@@ -40,7 +40,7 @@ class CryptoTransactionController extends Controller
             $ownedCurrency = $account->cryptoPortfolioItems()->where('currency', $validated['currency'])->get();
             if ($ownedCurrency->isEmpty() || $ownedCurrency->amount < $validated['amount']) {
                 throw ValidationException::withMessages([
-                    'account' => "You don't have enough of this currency to sell."
+                    'account' => "You don't have enough of this currency to sell.",
                 ]);
             }
         }
@@ -48,7 +48,7 @@ class CryptoTransactionController extends Controller
         $currencies = $cryptoCurrencyService->search([$validated['currency']]);
         if ($currencies->isEmpty()) {
             throw ValidationException::withMessages([
-                'currency' => 'Currency not found.'
+                'currency' => 'Currency not found.',
             ]);
         }
 
@@ -60,12 +60,12 @@ class CryptoTransactionController extends Controller
         if ($validated['type'] === 'buy') {
             if ($price > $account->amount) {
                 throw ValidationException::withMessages([
-                    'amount' => "Your account doesn't have enough money."
+                    'amount' => "Your account doesn't have enough money.",
                 ]);
             }
         }
 
-        DB::transaction(function () use($validated, $currency, $price, $account) {
+        DB::transaction(function () use ($validated, $currency, $price, $account) {
             $cryptoItem = CryptoPortfolioItem::query()->firstOrCreate([
                 'account_id' => $account->id,
                 'currency' => $currency->symbol(),

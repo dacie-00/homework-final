@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Models\CryptoCurrency;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -48,7 +47,7 @@ class CryptoCurrencyService
                 JSON_THROW_ON_ERROR
             );
             // TODO: error handling here
-            dd("oops", $responseBody);
+            dd('oops', $responseBody);
         }
 
         $currencyResponse = json_decode(
@@ -77,7 +76,7 @@ class CryptoCurrencyService
         $symbols = array_map(fn($code) => strtoupper($code), $symbols);
         $url = 'cryptocurrency/quotes/latest';
         $parameters = [
-            'symbol' => implode(',', $symbols)
+            'symbol' => implode(',', $symbols),
         ];
 
         $queryString = http_build_query($parameters);
@@ -85,8 +84,8 @@ class CryptoCurrencyService
         try {
             $response = Http::withHeaders(
                 [
-                    "Accepts" => "application/json",
-                    "X-CMC_PRO_API_KEY" => $this->key,
+                    'Accepts' => 'application/json',
+                    'X-CMC_PRO_API_KEY' => $this->key,
                 ]
             )->get("{$this->baseUri}$url?$queryString");
         } catch (ConnectionException $e) {
@@ -98,7 +97,7 @@ class CryptoCurrencyService
                 JSON_THROW_ON_ERROR
             );
             // TODO: error handling here
-            dd("oops", $responseBody);
+            dd('oops', $responseBody);
         }
 
         $response = json_decode(
