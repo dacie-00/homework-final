@@ -42,7 +42,6 @@
 
                         <x-input-label for="currency" :value="__('Currency')"/>
                         <x-select id="currency" name="currency">
-                            <option selected>Currency</option>
                             @foreach($currencies as $currency)
                                 <option value="{{ $currency->symbol() }}">
                                     {{

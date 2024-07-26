@@ -64,6 +64,7 @@ class AccountController extends Controller
 
         if ($account->type === 'investment') {
             $data['cryptoTransactions'] = $account->cryptoTransactions;
+            $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems;
         }
 
         return view('account.show', $data);

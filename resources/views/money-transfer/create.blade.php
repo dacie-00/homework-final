@@ -18,7 +18,7 @@
                                 <option value="{{ $account->iban }}">
                                     {{
                                         $account->name . ' (' .
-                                        number_format($account->amount, 2) . ' ' .
+                                        number_format($account->amount / 100, 2) . ' ' .
                                         $account->currency . ')'
                                     }}
                                 </option>
