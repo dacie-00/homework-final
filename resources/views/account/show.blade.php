@@ -11,6 +11,34 @@
                 <div class="p-6 text-gray-900">
                     @if($account->type === 'investment')
                         <h2 class="font-bold px-6 py-4">Portfolio</h2>
+                        <h3 class="font-bold px-6 py-4">Sell currency</h3>
+                        <form method="POST" action="{{ route('crypto-transaction.store') }}" id="transfer-form">
+                            @csrf
+                            <input hidden="hidden" id="type" name="type" value="sell">
+                            <input hidden="hidden" id="account" name="account" value="{{ $account->iban }}">
+
+                            <x-input-label for="currency" :value="__('Currency')"/>
+                            <x-select id="currency" name="currency">
+                                @foreach($cryptoPortfolioItems as $cryptoItem)
+                                    <option value="{{ $cryptoItem->currency }}">
+                                        {{
+                                            $cryptoItem->currency . ' (' .
+                                            number_format($cryptoItem->amount, 4) . ')'
+                                        }}
+                                    </option>
+                                @endforeach
+                            </x-select>
+                            <x-input-error :messages="$errors->get('currency')" class="mt-2"/>
+
+                            <x-input-label for="amount" :value="__('Amount')"/>
+                            <x-text-input type="number" step="0.0001" id="amount" name="amount"
+                                          value="{{ old('amount') }}"></x-text-input>
+                            <x-input-error :messages="$errors->get('amount')" class="mt-2"/>
+                            <x-input-error :messages="$errors->get('type')" class="mt-2"/>
+
+                            <br>
+                            <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                        </form>
                         <x-table.table>
                             <x-table.head>
                                 <x-table.row>

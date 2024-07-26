@@ -38,7 +38,7 @@ class CryptoTransactionController extends Controller
 
         if ($validated['type'] === 'sell') {
             $ownedCurrency = $account->cryptoPortfolioItems()->where('currency', $validated['currency'])->get();
-            if ($ownedCurrency->isEmpty() || $ownedCurrency->amount < $validated['amount']) {
+            if ($ownedCurrency->isEmpty() || $ownedCurrency->first()->amount < $validated['amount']) {
                 throw ValidationException::withMessages([
                     'account' => "You don't have enough of this currency to sell.",
                 ]);
@@ -70,15 +70,17 @@ class CryptoTransactionController extends Controller
                 'account_id' => $account->id,
                 'currency' => $currency->symbol(),
             ]);
-            $cryptoItem->amount += $validated['amount'];
-            $cryptoItem->save();
+
 
             if ($validated['type'] === 'buy') {
                 $account->amount -= $price * 100;
+                $cryptoItem->amount += $validated['amount'];
             } else {
                 $account->amount += $price * 100;
+                $cryptoItem->amount -= $validated['amount'];
             }
             $account->save();
+            $cryptoItem->save();
 
             CryptoTransaction::query()->create([
                 'account_id' => $account->id,
