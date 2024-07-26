@@ -20,10 +20,11 @@
                         <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
                         <x-primary-button>{{ __('Submit') }}</x-primary-button>
                     </form>
-                    <br>
+
                     <h2 class="font-bold px-6 py-4">Buy currency</h2>
                     <form method="POST" action="{{ route('crypto-transaction.store') }}" id="transfer-form">
                         @csrf
+                        <input hidden="hidden" id="type" name="type" value="buy">
                         <x-input-label for="account" :value="__('Account to make purchase from')"/>
                         <x-select id="account" name="account">
                             <option selected>Choose an account</option>
@@ -31,12 +32,14 @@
                                 <option value="{{ $account->iban }}">
                                     {{
                                         $account->name . ' (' .
-                                        number_format($account->amount, 2) . ' ' .
+                                        number_format($account->amount / 100, 2) . ' ' .
                                         $account->currency . ')'
                                     }}
                                 </option>
                             @endforeach
                         </x-select>
+                        <x-input-error :messages="$errors->get('account')" class="mt-2"/>
+
                         <x-input-label for="currency" :value="__('Currency')"/>
                         <x-select id="currency" name="currency">
                             <option selected>Currency</option>
@@ -49,11 +52,13 @@
                                 </option>
                             @endforeach
                         </x-select>
+                        <x-input-error :messages="$errors->get('currency')" class="mt-2"/>
 
                         <x-input-label for="amount" :value="__('Amount')"/>
                         <x-text-input type="number" step="0.0001" id="amount" name="amount"
                                       value="{{ old('amount') }}"></x-text-input>
                         <x-input-error :messages="$errors->get('amount')" class="mt-2"/>
+                        <x-input-error :messages="$errors->get('type')" class="mt-2"/>
 
                         <br>
                         <x-primary-button>{{ __('Submit') }}</x-primary-button>

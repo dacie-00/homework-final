@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
     Route::get('/crypto/{symbol}', [CryptoController::class, 'show'])->name('crypto.show');
 
-    Route::get('/crypto-transaction/store', [CryptoTransactionController::class, 'store'])->name('crypto-transaction.store');
+    Route::post('/crypto-transaction/store', [CryptoTransactionController::class, 'store'])->name('crypto-transaction.store');
 });
 
 

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Account;
+use App\Models\CryptoPortfolioItem;
 use App\Models\CryptoTransaction;
 use App\Models\MoneyTransfer;
 use App\Models\User;
@@ -30,7 +31,10 @@ class DatabaseSeeder extends Seeder
         Account::factory(1)->forUser('testUser')->create(['type' => 'investment']);
 
         MoneyTransfer::factory(100)->create();
+
         CryptoTransaction::factory(100)->create();
+        CryptoPortfolioItem::factory(100)->create();
+
 
         $accounts = Account::all();
         foreach(MoneyTransfer::all() as $transfer) {

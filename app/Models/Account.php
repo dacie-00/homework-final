@@ -38,4 +38,9 @@ class Account extends Model
     {
         return $this->hasMany(CryptoTransaction::class);
     }
+
+    public function cryptoPortfolioItems(): HasMany
+    {
+        return $this->hasMany(CryptoPortfolioItem::class);
+    }
 }
