@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Services\CryptoCurrencyService;
 use Mockery\MockInterface;
 
-it('purchases cryptocurrency', function () {
+it('buys cryptocurrency', function () {
     $user = User::factory()->create();
     $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
         $mock
@@ -36,9 +36,9 @@ it('purchases cryptocurrency', function () {
             'currency' => 'FOO',
         ]
     );
+
     $response->assertRedirect(route('crypto.index'));
     $this->followRedirects($response)->assertStatus(200);
-
     $this->assertDatabaseHas('accounts',
         [
             'iban' => 'ibanFoo',
@@ -71,7 +71,6 @@ it('sells cryptocurrency', function () {
         'amount' => 100000,
         'currency' => 'USD',
     ]);
-
     CryptoPortfolioItem::factory()->create([
         'account_id' => $account->id,
         'amount' => 7.5,
@@ -87,9 +86,9 @@ it('sells cryptocurrency', function () {
             'currency' => 'FOO',
         ]
     );
+
     $response->assertRedirect(route('crypto.index'));
     $this->followRedirects($response)->assertStatus(200);
-
     $this->assertDatabaseHas('accounts',
         [
             'iban' => 'ibanFoo',
@@ -103,3 +102,97 @@ it('sells cryptocurrency', function () {
         ]);
 });
 
+
+it('fails to buy cryptocurrency it cannot afford', function () {
+    $user = User::factory()->create();
+    $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
+        $mock
+            ->shouldReceive('search')
+            ->andReturn(Collect([
+                new CryptoCurrency('FOO', 4000),
+            ]));
+        $mock
+            ->shouldReceive('getTop')
+            ->andReturn(collect([]));
+    });
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'iban' => 'ibanFoo',
+        'type' => 'investment',
+        'amount' => 11000,
+        'currency' => 'USD',
+    ]);
+
+    $response = $this->actingAs($user)->post(
+        route('crypto-transaction.store'),
+        [
+            'account' => $account->iban,
+            'type' => 'buy',
+            'amount' => 3,
+            'currency' => 'FOO',
+        ]
+    );
+
+    $response->assertSessionHasErrors('amount');
+    $this->assertDatabaseHas('accounts',
+        [
+            'iban' => 'ibanFoo',
+            'amount' => 11000
+        ]);
+    $this->assertDatabaseMissing('crypto_portfolio_items',
+        [
+            'account_id' => $account->id,
+            'amount' => 3,
+            'currency' => 'FOO'
+        ]);
+});
+
+it('fails to sell cryptocurrency it does not have', function () {
+    $user = User::factory()->create();
+    $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
+        $mock
+            ->shouldReceive('search')
+            ->andReturn(Collect([
+                new CryptoCurrency('FOO', 4000),
+            ]));
+        $mock
+            ->shouldReceive('getTop')
+            ->andReturn(collect([]));
+    });
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'iban' => 'ibanFoo',
+        'type' => 'investment',
+        'amount' => 100000,
+        'currency' => 'USD',
+    ]);
+
+    CryptoPortfolioItem::factory()->create([
+        'account_id' => $account->id,
+        'amount' => 1.5,
+        'currency' => 'FOO',
+    ]);
+
+    $response = $this->actingAs($user)->post(
+        route('crypto-transaction.store'),
+        [
+            'account' => $account->iban,
+            'type' => 'sell',
+            'amount' => 3,
+            'currency' => 'FOO',
+        ]
+    );
+
+    $response->assertSessionHasErrors('account');
+    $this->assertDatabaseHas('accounts',
+        [
+            'iban' => 'ibanFoo',
+            'amount' => 100000
+        ]);
+    $this->assertDatabaseHas('crypto_portfolio_items',
+        [
+            'account_id' => $account->id,
+            'amount' => 1.5,
+            'currency' => 'FOO'
+        ]);
+});
