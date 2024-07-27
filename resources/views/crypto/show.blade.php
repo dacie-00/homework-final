@@ -31,7 +31,7 @@
                             <x-table.body>
                                 @foreach($moneyTransfers as $moneyTransfer)
                                     <x-table.row>
-                                        @php($receiving = $moneyTransfer->pivot->type === "receive")
+                                        @php($receiving = $moneyTransfer->pivot->type === 'receive')
                                         <x-table.data>
                                             {{ $moneyTransfer->created_at }}
                                         </x-table.data>

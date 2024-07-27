@@ -13,7 +13,7 @@ it('purchases cryptocurrency', function () {
         $mock
             ->shouldReceive('search')
             ->andReturn(Collect([
-                new CryptoCurrency('FOO', 40),
+                new CryptoCurrency('FOO', 4000),
             ]));
         $mock
             ->shouldReceive('getTop')
@@ -58,7 +58,7 @@ it('sells cryptocurrency', function () {
         $mock
             ->shouldReceive('search')
             ->andReturn(Collect([
-                new CryptoCurrency('FOO', 40),
+                new CryptoCurrency('FOO', 4000),
             ]));
         $mock
             ->shouldReceive('getTop')

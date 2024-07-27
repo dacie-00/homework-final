@@ -29,7 +29,7 @@ class ExchangeRateService
 
         $currenciesData = simplexml_load_string($response->body());
         foreach ($currenciesData->Currencies->Currency as $currencyData) {
-            $currencies->add(new Currency((string)$currencyData->ID, (float)$currencyData->Rate));
+            $currencies->add(new Currency((string)$currencyData->ID, (float)$currencyData->Rate * 100));
         }
 
         return $currencies;

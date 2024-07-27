@@ -85,7 +85,7 @@
                                             {{ $currency->symbol() }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $currency->price() }}
+                                            {{ $currency->price() . ' USD' }}
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach

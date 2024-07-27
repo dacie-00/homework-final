@@ -13,7 +13,6 @@
                         Account balance - {{ number_format($account->amount / 100, 2) . " {$account->currency}" }}
                     </h2>
                     @if($account->type === 'investment')
-                        <h2 class="font-bold px-6 py-4">Portfolio</h2>
                         <h3 class="font-bold px-6 py-4">Sell currency</h3>
                         <form method="POST" action="{{ route('crypto-transaction.store') }}" id="transfer-form">
                             @csrf
@@ -42,6 +41,7 @@
                             <br>
                             <x-primary-button>{{ __('Submit') }}</x-primary-button>
                         </form>
+                        <h2 class="font-bold px-6 py-4">Portfolio</h2>
                         <x-table.table>
                             <x-table.head>
                                 <x-table.row>
