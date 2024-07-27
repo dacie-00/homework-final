@@ -24,14 +24,6 @@ it('creates a new money transfer account', function () {
 
 it('transfers money between two accounts', function () {
     $user = User::factory()->create();
-    $this->mock(ExchangeRateService::class, function (MockInterface $mock) {
-        $mock
-            ->shouldReceive('get')
-            ->andReturn(Collect([
-                new Currency('FOO', 0.5),
-                new Currency('BAR',  4),
-            ]));
-    });
     Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'sender',
@@ -46,6 +38,14 @@ it('transfers money between two accounts', function () {
         'amount' => 0,
         'currency' => 'BAR',
     ]);
+    $this->mock(ExchangeRateService::class, function (MockInterface $mock) {
+        $mock
+            ->shouldReceive('get')
+            ->andReturn(Collect([
+                new Currency('FOO', 0.5),
+                new Currency('BAR',  4),
+            ]));
+    });
 
     $response = $this->actingAs($user)->post(
         route('money-transfer.store'),

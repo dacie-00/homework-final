@@ -9,6 +9,13 @@ use Mockery\MockInterface;
 
 it('buys cryptocurrency', function () {
     $user = User::factory()->create();
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'iban' => 'ibanFoo',
+        'type' => 'investment',
+        'amount' => 100000,
+        'currency' => 'USD',
+    ]);
     $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
         $mock
             ->shouldReceive('search')
@@ -19,13 +26,6 @@ it('buys cryptocurrency', function () {
             ->shouldReceive('getTop')
             ->andReturn(collect([]));
     });
-    $account = Account::factory()->create([
-        'user_id' => $user->id,
-        'iban' => 'ibanFoo',
-        'type' => 'investment',
-        'amount' => 100000,
-        'currency' => 'USD',
-    ]);
 
     $response = $this->actingAs($user)->post(
         route('crypto-transaction.store'),
@@ -54,16 +54,6 @@ it('buys cryptocurrency', function () {
 
 it('sells cryptocurrency', function () {
     $user = User::factory()->create();
-    $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
-        $mock
-            ->shouldReceive('search')
-            ->andReturn(Collect([
-                new CryptoCurrency('FOO', 4000),
-            ]));
-        $mock
-            ->shouldReceive('getTop')
-            ->andReturn(collect([]));
-    });
     $account = Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'ibanFoo',
@@ -76,6 +66,16 @@ it('sells cryptocurrency', function () {
         'amount' => 7.5,
         'currency' => 'FOO',
     ]);
+    $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
+        $mock
+            ->shouldReceive('search')
+            ->andReturn(Collect([
+                new CryptoCurrency('FOO', 4000),
+            ]));
+        $mock
+            ->shouldReceive('getTop')
+            ->andReturn(collect([]));
+    });
 
     $response = $this->actingAs($user)->post(
         route('crypto-transaction.store'),
@@ -105,6 +105,13 @@ it('sells cryptocurrency', function () {
 
 it('fails to buy cryptocurrency it cannot afford', function () {
     $user = User::factory()->create();
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'iban' => 'ibanFoo',
+        'type' => 'investment',
+        'amount' => 11000,
+        'currency' => 'USD',
+    ]);
     $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
         $mock
             ->shouldReceive('search')
@@ -115,13 +122,6 @@ it('fails to buy cryptocurrency it cannot afford', function () {
             ->shouldReceive('getTop')
             ->andReturn(collect([]));
     });
-    $account = Account::factory()->create([
-        'user_id' => $user->id,
-        'iban' => 'ibanFoo',
-        'type' => 'investment',
-        'amount' => 11000,
-        'currency' => 'USD',
-    ]);
 
     $response = $this->actingAs($user)->post(
         route('crypto-transaction.store'),
@@ -149,6 +149,18 @@ it('fails to buy cryptocurrency it cannot afford', function () {
 
 it('fails to sell cryptocurrency it does not have', function () {
     $user = User::factory()->create();
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'iban' => 'ibanFoo',
+        'type' => 'investment',
+        'amount' => 100000,
+        'currency' => 'USD',
+    ]);
+    CryptoPortfolioItem::factory()->create([
+        'account_id' => $account->id,
+        'amount' => 1.5,
+        'currency' => 'FOO',
+    ]);
     $this->mock(CryptoCurrencyService::class, function (MockInterface $mock) {
         $mock
             ->shouldReceive('search')
@@ -159,19 +171,6 @@ it('fails to sell cryptocurrency it does not have', function () {
             ->shouldReceive('getTop')
             ->andReturn(collect([]));
     });
-    $account = Account::factory()->create([
-        'user_id' => $user->id,
-        'iban' => 'ibanFoo',
-        'type' => 'investment',
-        'amount' => 100000,
-        'currency' => 'USD',
-    ]);
-
-    CryptoPortfolioItem::factory()->create([
-        'account_id' => $account->id,
-        'amount' => 1.5,
-        'currency' => 'FOO',
-    ]);
 
     $response = $this->actingAs($user)->post(
         route('crypto-transaction.store'),
