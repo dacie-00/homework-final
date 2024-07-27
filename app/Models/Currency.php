@@ -11,8 +11,8 @@ class Currency
 
     public function __construct(string $symbol, float $exchangeRate)
     {
-        $this->exchangeRate = $exchangeRate;
         $this->symbol = $symbol;
+        $this->exchangeRate = $exchangeRate;
     }
 
     public function symbol(): string
