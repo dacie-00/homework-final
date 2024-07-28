@@ -1,26 +1,17 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Models;
 
-class CryptoCurrency
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CryptoCurrency extends Model
 {
-    private string $symbol;
-    private float $price;
+    use HasFactory;
 
-    public function __construct(string $symbol, float $price)
-    {
-        $this->symbol = $symbol;
-        $this->price = $price;
-    }
-
-    public function symbol(): string
-    {
-        return $this->symbol;
-    }
-
-    public function price(): float
-    {
-        return $this->price;
-    }
+    protected $fillable = [
+        'rank',
+        'symbol',
+        'price',
+    ];
 }

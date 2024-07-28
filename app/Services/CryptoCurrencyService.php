@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\CryptoCurrency;
+use App\Models\CryptoCurrencyOld;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use JsonException;
@@ -24,10 +26,10 @@ class CryptoCurrencyService
         $this->key = $key ?? env('COIN_MARKET_CAP_API_KEY');
     }
 
-    /**
-     * @return Collection<CryptoCurrency>
-     */
-    public function getTop(int $page = 1, int $currenciesPerPage = 10): Collection
+//    /**
+//     * @return Collection<CryptoCurrencyOld>
+//     */
+    public function getTop(int $page = 1, int $currenciesPerPage = 50): void
     {
         try {
             $response = $this->get(
@@ -37,17 +39,15 @@ class CryptoCurrencyService
                     'limit' => $currenciesPerPage,
                 ]);
         } catch (ConnectionException|JsonException) {
-            return collect();
+            return;
         }
 
-        $currencies = collect();
-        foreach ($response->data as $currency) {
-            $currencies->add(new CryptoCurrency(
-                $currency->symbol,
-                $currency->quote->USD->price
-            ));
+        foreach ($response->data as $rank => $currency) {
+            CryptoCurrency::query()->updateOrCreate(
+                ['rank' => $rank + 1],
+                ['symbol' => $currency->symbol, 'price' => $currency->quote->USD->price]
+            );
         }
-        return $currencies;
     }
 
     /**
@@ -57,11 +57,26 @@ class CryptoCurrencyService
     public function search(array $symbols): Collection
     {
         $symbols = array_map(fn($code) => strtoupper($code), $symbols);
+        $newSymbols = [];
+        foreach($symbols as &$symbol) {
+            $currency = CryptoCurrency::query()->where('symbol', $symbol)->first();
+            if ($currency !== null) {
+                $symbol = $currency;
+            } else {
+                $newSymbols[] = $symbol;
+            }
+        }
+        unset($symbol);
+
+        if (empty($newSymbols)) {
+            return collect($symbols);
+        }
+
         try {
             $response = $this->get(
                 'cryptocurrency/quotes/latest',
                 [
-                    'symbol' => implode(',', $symbols),
+                    'symbol' => implode(',', $newSymbols),
                 ]);
         } catch (ConnectionException|JsonException) {
             return collect();
@@ -70,20 +85,26 @@ class CryptoCurrencyService
         if (!get_object_vars($response->data)) {
             return collect();
         }
-        $currencies = collect();
-        foreach ($symbols as $ticker) {
-            if (!isset($response->data->$ticker) || !$response->data->$ticker->is_active) {
+
+        foreacH($symbols as $i => &$symbol) {
+            if (is_string($symbol) === false) {
                 continue;
             }
-            $currency = $response->data->$ticker;
-            $currencies->add(
-                new CryptoCurrency(
-                    $currency->symbol,
-                    $currency->quote->USD->price
-                )
-            );
+            if (!isset($response->data->$symbol) || !$response->data->$symbol->is_active) {
+                unset($symbols[$i]);
+                continue;
+            }
+            $currency = $response->data->$symbol;
+            $symbol = CryptoCurrency::query()->updateOrCreate(
+                ['symbol' => $currency->symbol],
+                [
+                    'price' => $currency->quote->USD->price
+                ]);
         }
-        return $currencies;
+        unset($symbol);
+
+        $symbols = array_values($symbols);
+        return collect($symbols);
     }
 
     /**

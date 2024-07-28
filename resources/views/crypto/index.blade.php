@@ -43,10 +43,10 @@
                         <x-input-label for="currency" :value="__('Currency')"/>
                         <x-select id="currency" name="currency">
                             @foreach($currencies as $currency)
-                                <option value="{{ $currency->symbol() }}">
+                                <option value="{{ $currency->symbol }}">
                                     {{
-                                        $currency->symbol() . ' (' .
-                                        number_format($currency->price(), 4) . ' USD)'
+                                        $currency->symbol . ' (' .
+                                        number_format($currency->price, 4) . ' USD)'
                                     }}
                                 </option>
                             @endforeach
@@ -64,7 +64,7 @@
                     </form>
 
                     <h2 class="font-bold px-6 py-4">Currencies</h2>
-                    @if (count($currencies) === 0)
+                    @if ($currencies->isEmpty())
                         <p>No currencies found!</p>
                     @else
                         <x-table.table>
@@ -82,10 +82,10 @@
                                 @foreach($currencies as $currency)
                                     <x-table.row>
                                         <x-table.data>
-                                            {{ $currency->symbol() }}
+                                            {{ $currency->symbol }}
                                         </x-table.data>
                                         <x-table.data>
-                                            {{ $currency->price() . ' USD' }}
+                                            {{ $currency->price . ' USD' }}
                                         </x-table.data>
                                     </x-table.row>
                                 @endforeach

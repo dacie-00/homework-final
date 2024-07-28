@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\CryptoCurrency;
+use App\Models\CryptoCurrencyOld;
 use App\Models\CryptoPortfolioItem;
 use App\Models\CryptoTransaction;
 use App\Services\CryptoCurrencyService;
@@ -55,7 +56,7 @@ class CryptoTransactionController extends Controller
         /** @var CryptoCurrency $currency */
         $currency = $currencies->first();
 
-        $price = $currency->price() * $validated['amount'];
+        $price = $currency->price * $validated['amount'];
 
         if ($validated['type'] === 'buy') {
             if ($price > $account->amount) {
@@ -68,7 +69,7 @@ class CryptoTransactionController extends Controller
         DB::transaction(function () use ($validated, $currency, $price, $account) {
             $cryptoItem = CryptoPortfolioItem::query()->firstOrCreate([
                 'account_id' => $account->id,
-                'currency' => $currency->symbol(),
+                'currency' => $currency->symbol,
             ]);
 
 
@@ -86,13 +87,13 @@ class CryptoTransactionController extends Controller
                 'account_id' => $account->id,
                 'type' => $validated['type'],
                 'amount' => $validated['amount'],
-                'currency' => $currency->symbol(),
+                'currency' => $currency->symbol,
                 'price' => $price,
             ]);
         });
 
         $verb = $validated['type'] === 'sell' ? 'sold' : 'bought';
         return redirect(route('crypto.index'))
-            ->with('success', "Successfully $verb {$validated['amount']} {$currency->symbol()}!");
+            ->with('success', "Successfully $verb {$validated['amount']} $currency->symbol!");
     }
 }

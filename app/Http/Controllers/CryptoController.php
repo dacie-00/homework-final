@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\CryptoCurrency;
 use App\Services\CryptoCurrencyService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -17,17 +18,19 @@ class CryptoController extends Controller
                 explode(',', $request->query('q'))
             );
         } else {
-            $currencies = $cryptoCurrencyService->getTop();
+            $currencies = CryptoCurrency::query()
+                ->where('rank', '<=', 25)
+                ->orderBy('rank')
+                ->get();
         }
         $accounts = Account::query()
             ->where('user_id', Auth::id())
             ->where('type', 'investment')
             ->get();
-        return view('crypto.index', ['currencies' => $currencies, 'accounts' => $accounts]);
-    }
 
-    public function show(string $symbol, CryptoCurrencyService $cryptoCurrencyService): View
-    {
-        return view('crypto.show', ['currencies' => $cryptoCurrencyService->search($symbol)]);
+        return view(
+            'crypto.index',
+            ['currencies' => $currencies, 'accounts' => $accounts]
+        );
     }
 }

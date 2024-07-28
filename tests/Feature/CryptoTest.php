@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Account;
-use App\Models\CryptoCurrency;
+use App\Models\CryptoCurrencyOld;
 use App\Models\CryptoPortfolioItem;
 use App\Models\User;
 use App\Services\CryptoCurrencyService;
@@ -20,7 +20,7 @@ it('buys cryptocurrency', function () {
         $mock
             ->shouldReceive('search')
             ->andReturn(Collect([
-                new CryptoCurrency('FOO', 4000),
+                new CryptoCurrencyOld('FOO', 4000),
             ]));
         $mock
             ->shouldReceive('getTop')
@@ -70,7 +70,7 @@ it('sells cryptocurrency', function () {
         $mock
             ->shouldReceive('search')
             ->andReturn(Collect([
-                new CryptoCurrency('FOO', 4000),
+                new CryptoCurrencyOld('FOO', 4000),
             ]));
         $mock
             ->shouldReceive('getTop')
@@ -116,7 +116,7 @@ it('fails to buy cryptocurrency it cannot afford', function () {
         $mock
             ->shouldReceive('search')
             ->andReturn(Collect([
-                new CryptoCurrency('FOO', 4000),
+                new CryptoCurrencyOld('FOO', 4000),
             ]));
         $mock
             ->shouldReceive('getTop')
@@ -165,7 +165,7 @@ it('fails to sell cryptocurrency it does not have', function () {
         $mock
             ->shouldReceive('search')
             ->andReturn(Collect([
-                new CryptoCurrency('FOO', 4000),
+                new CryptoCurrencyOld('FOO', 4000),
             ]));
         $mock
             ->shouldReceive('getTop')

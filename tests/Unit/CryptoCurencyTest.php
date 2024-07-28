@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\CryptoCurrency;
+use App\Models\CryptoCurrencyOld;
 
 it('correctly assigns a symbol to cryptocurrency', function () {
     $currency = new CryptoCurrency('FOO', 3.33);
@@ -8,6 +8,6 @@ it('correctly assigns a symbol to cryptocurrency', function () {
 });
 
 it('correctly assigns a price to cryptocurrency', function () {
-    $currency = new CryptoCurrency('FOO', 3.33);
+    $currency = new CryptoCurrencyOld('FOO', 3.33);
     expect($currency->price())->toEqual(3.33);
 });

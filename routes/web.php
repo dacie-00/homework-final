@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/money-transfer/store', [MoneyTransferController::class, 'store'])->name('money-transfer.store');
 
     Route::get('/crypto', [CryptoController::class, 'index'])->name('crypto.index');
-    Route::get('/crypto/{symbol}', [CryptoController::class, 'show'])->name('crypto.show');
 
     Route::post('/crypto-transaction/store', [CryptoTransactionController::class, 'store'])->name('crypto-transaction.store');
 });
