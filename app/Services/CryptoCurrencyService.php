@@ -5,8 +5,14 @@ namespace App\Services;
 
 use App\Models\CryptoCurrency;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use JsonException;
+use Mockery\Exception;
+use Nette\Utils\Json;
 
 class CryptoCurrencyService
 {
@@ -23,42 +29,19 @@ class CryptoCurrencyService
      */
     public function getTop(int $page = 1, int $currenciesPerPage = 10): Collection
     {
-        $url = 'cryptocurrency/listings/latest';
-        $parameters = [
-            'start' => 1 + $page * $currenciesPerPage - $currenciesPerPage,
-            'limit' => $currenciesPerPage,
-        ];
-
-        $queryString = http_build_query($parameters);
-
         try {
-            $response = Http::withHeaders(
+            $response = $this->get(
+                'cryptocurrency/listings/latest',
                 [
-                    'Accepts' => 'application/json',
-                    'X-CMC_PRO_API_KEY' => $this->key,
-                ]
-            )->get("{$this->baseUri}$url?$queryString");
-        } catch (ConnectionException $e) {
-            $response = $e->getResponse();
-            $responseBody = json_decode(
-                $response->getBody()->getContents(),
-                false,
-                512,
-                JSON_THROW_ON_ERROR
-            );
-            // TODO: error handling here
-            dd('oops', $responseBody);
+                    'start' => 1 + $page * $currenciesPerPage - $currenciesPerPage,
+                    'limit' => $currenciesPerPage,
+                ]);
+        } catch (ConnectionException|JsonException) {
+            return collect();
         }
 
-        $currencyResponse = json_decode(
-            $response->getBody()->getContents(),
-            false,
-            512,
-            JSON_THROW_ON_ERROR
-        );
-
         $currencies = collect();
-        foreach ($currencyResponse->data as $currency) {
+        foreach ($response->data as $currency) {
             $currencies->add(new CryptoCurrency(
                 $currency->symbol,
                 $currency->quote->USD->price
@@ -74,57 +57,63 @@ class CryptoCurrencyService
     public function search(array $symbols): Collection
     {
         $symbols = array_map(fn($code) => strtoupper($code), $symbols);
-        $url = 'cryptocurrency/quotes/latest';
-        $parameters = [
-            'symbol' => implode(',', $symbols),
-        ];
-
-        $queryString = http_build_query($parameters);
-
         try {
-            $response = Http::withHeaders(
+            $response = $this->get(
+                'cryptocurrency/quotes/latest',
                 [
-                    'Accepts' => 'application/json',
-                    'X-CMC_PRO_API_KEY' => $this->key,
-                ]
-            )->get("{$this->baseUri}$url?$queryString");
-        } catch (ConnectionException $e) {
-            $response = $e->getResponse();
-            $responseBody = json_decode(
-                $response->getBody()->getContents(),
-                false,
-                512,
-                JSON_THROW_ON_ERROR
-            );
-            // TODO: error handling here
-            dd('oops', $responseBody);
+                    'symbol' => implode(',', $symbols),
+                ]);
+        } catch (ConnectionException|JsonException) {
+            return collect();
         }
-
-        $response = json_decode(
-            $response->getBody()->getContents(),
-            false,
-            512,
-            JSON_THROW_ON_ERROR
-        );
 
         if (!get_object_vars($response->data)) {
             return collect();
         }
         $currencies = collect();
         foreach ($symbols as $ticker) {
-            if (isset($response->data->$ticker)) {
-                $currency = $response->data->$ticker;
-                if (!$currency->is_active) {
-                    continue;
-                }
-                $currencies->add(
-                    new CryptoCurrency(
-                        $currency->symbol,
-                        $currency->quote->USD->price
-                    )
-                );
+            if (!isset($response->data->$ticker) || !$response->data->$ticker->is_active) {
+                continue;
             }
+            $currency = $response->data->$ticker;
+            $currencies->add(
+                new CryptoCurrency(
+                    $currency->symbol,
+                    $currency->quote->USD->price
+                )
+            );
         }
         return $currencies;
+    }
+
+    /**
+     * @throws ConnectionException
+     * @throws JsonException
+     */
+    private function get(string $url, array $query): \stdClass
+    {
+        try {
+            $response = Http::withHeaders(
+                [
+                    'Accepts' => 'application/json',
+                    'X-CMC_PRO_API_KEY' => $this->key,
+                ]
+            )->get($this->baseUri . $url, $query);
+        } catch (ConnectionException $e) {
+            Log::error($e);
+            throw $e;
+        }
+
+        try {
+            return json_decode(
+                $response->body(),
+                false,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+        } catch (JsonException $e) {
+            Log::error($e);
+            throw $e;
+        }
     }
 }
