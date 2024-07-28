@@ -13,21 +13,25 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('account.index')">
+                        <img class="mr-1 w-4 opacity-75" src="{{ Vite::asset('public/img/dashboard.svg') }}" alt="">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('money-transfer.create')" :active="request()->routeIs('money-transfer.create')">
+                        <img class="mr-1 w-4 opacity-75" src="{{ Vite::asset('public/img/new-transfer.svg') }}" alt="">
                         {{ __('New transfer') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('account.create')" :active="request()->routeIs('account.create')">
+                        <img class="mr-1 w-4 opacity-75" src="{{ Vite::asset('public/img/new-account.svg') }}" alt="">
                         {{ __('New account') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('crypto.index')" :active="request()->routeIs('crypto.index')">
+                        <img class="-mr-1 w-8 opacity-75" src="{{ Vite::asset('public/img/crypto.svg') }}" alt="">
                         {{ __('Crypto index') }}
                     </x-nav-link>
                 </div>
