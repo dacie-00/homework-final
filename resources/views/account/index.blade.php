@@ -5,63 +5,57 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    @if(session('success'))
-                        <div>
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    @if (isset($accounts))
-                        <x-table.table>
-                            <x-table.head>
-                                <x-table.row>
-                                    <x-table.header>
-                                        {{ __('Account') }}
-                                    </x-table.header>
-                                    <x-table.header>
-                                        {{ __('Account type') }}
-                                    </x-table.header>
-                                    <x-table.header>
-                                        {{ __('Name') }}
-                                    </x-table.header>
-                                    <x-table.header>
-                                        {{ __('Available funds') }}
-                                    </x-table.header>
-                                    <x-table.header>
-                                    </x-table.header>
-                                </x-table.row>
-                            </x-table.head>
-                            <x-table.body>
-                                @foreach($accounts as $account)
-                                    <x-table.row>
-                                        <x-table.data>
-                                            {{ $account->iban }}
-                                        </x-table.data>
-                                        <x-table.data>
-                                            {{ ucfirst($account->type) }}
-                                        </x-table.data>
-                                        <x-table.data>
-                                            {{ $account->name }}
-                                        </x-table.data>
-                                        <x-table.data>
-                                            {{ number_format($account->amount / 100, 2) . " " .  $account->currency}}
-                                        </x-table.data>
-                                        <x-table.data>
-                                            <a
-                                                href={{route('account.show', ['account' => $account->id])}}>
-                                                {{ __('View info') }}
-                                            </a>
-                                        </x-table.data>
-                                    </x-table.row>
-                                @endforeach
-                            </x-table.body>
-                            @endif
-                        </x-table.table>
-                </div>
+    <x-content>
+        @if(session('success'))
+            <div>
+                {{ session('success') }}
             </div>
-        </div>
-    </div>
+        @endif
+        @if (isset($accounts))
+            <x-table.table>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header>
+                            {{ __('Account') }}
+                        </x-table.header>
+                        <x-table.header>
+                            {{ __('Account type') }}
+                        </x-table.header>
+                        <x-table.header>
+                            {{ __('Name') }}
+                        </x-table.header>
+                        <x-table.header>
+                            {{ __('Available funds') }}
+                        </x-table.header>
+                        <x-table.header>
+                        </x-table.header>
+                    </x-table.row>
+                </x-table.head>
+                <x-table.body>
+                    @foreach($accounts as $account)
+                        <x-table.row>
+                            <x-table.data>
+                                {{ $account->iban }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ ucfirst($account->type) }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ $account->name }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ number_format($account->amount / 100, 2) . ' ' .  $account->currency}}
+                            </x-table.data>
+                            <x-table.data>
+                                <a
+                                    href={{route('account.show', ['account' => $account->id])}}>
+                                    {{ __('View info') }}
+                                </a>
+                            </x-table.data>
+                        </x-table.row>
+                    @endforeach
+                </x-table.body>
+            </x-table.table>
+        @endif
+    </x-content>
 </x-app-layout>
