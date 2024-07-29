@@ -74,6 +74,13 @@ class CryptoTransactionController extends Controller
 
 
             if ($validated['type'] === 'buy') {
+
+                // get ratio of the amount currency in this purchase relative to total in wallet
+                $ratio = $validated['amount'] / ($cryptoItem->amount + $validated['amount']);
+                $purchaseAverage = $price / $validated['amount'];
+                // do linear interpolation between current average and new purchase average based on ratio
+                $cryptoItem->average_price = $cryptoItem->average_price + $ratio * ($purchaseAverage - $cryptoItem->average_price);
+
                 $account->amount -= $price;
                 $cryptoItem->amount += $validated['amount'];
             } else {

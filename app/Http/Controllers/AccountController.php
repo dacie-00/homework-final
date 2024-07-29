@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\CryptoCurrency;
 use App\Models\Currency;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -52,8 +53,13 @@ class AccountController extends Controller
 
     public function show(Account $account): View
     {
+        $relations = ['accounts.user'];
+        if ($account->type === 'investment') {
+            $relations[] = 'accounts.cryptoTransactions';
+            $relations[] = 'accounts.cryptoPortfolioItems';
+        }
         $moneyTransfers = $account->moneyTransfers()
-            ->with('accounts.user')
+            ->with($relations)
             ->withPivot('type')
             ->get();
 
@@ -63,6 +69,7 @@ class AccountController extends Controller
         ];
 
         if ($account->type === 'investment') {
+            $data['cryptoCurrencies'] = CryptoCurrency::query()->get();
             $data['cryptoTransactions'] = $account->cryptoTransactions;
             $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems;
         }

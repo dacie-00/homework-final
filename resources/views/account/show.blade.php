@@ -1,3 +1,4 @@
+@php use App\Models\CryptoCurrency; @endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -48,6 +49,9 @@
                         <x-table.header>
                             {{ __('Amount') }}
                         </x-table.header>
+                        <x-table.header>
+                            {{ __('Profitability') }}
+                        </x-table.header>
                     </x-table.row>
                 </x-table.head>
                 <x-table.body>
@@ -58,6 +62,12 @@
                             </x-table.data>
                             <x-table.data>
                                 {{ $cryptoItem->amount }}
+                            </x-table.data>
+                            <x-table.data>
+                                {{ number_format(
+                                    $cryptoCurrencies->where('symbol', $cryptoItem->currency)->first()->price / $cryptoItem->average_price,
+                                    2) . '%'
+                                }}
                             </x-table.data>
                         </x-table.row>
                     @endforeach

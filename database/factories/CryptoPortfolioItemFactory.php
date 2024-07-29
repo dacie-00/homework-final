@@ -22,6 +22,7 @@ class CryptoPortfolioItemFactory extends Factory
             'account_id' => Account::query()->where('type', 'investment')->get()->random()->id,
             'amount' => fake()->numberBetween(1, 10),
             'currency' => fake()->randomElement(['BTC', 'ETH', 'LTC', 'XRP', 'BCH', 'USDT']),
+            'average_price' => fake()->numberBetween(1, 1000),
         ];
     }
 }

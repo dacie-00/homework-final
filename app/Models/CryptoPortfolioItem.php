@@ -14,6 +14,7 @@ class CryptoPortfolioItem extends Model
         'account_id',
         'currency',
         'amount',
+        'average_price',
     ];
 
     public function account(): BelongsTo

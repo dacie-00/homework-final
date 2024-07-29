@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('account_id');
             $table->decimal('amount', 30, 10)->default(0);
             $table->string('currency');
+            $table->decimal('average_price', 30, 10)->default(0);
             $table->timestamps();
         });
     }
