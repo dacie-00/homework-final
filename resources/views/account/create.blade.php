@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <x-content>
-        <h2 class="text-lg font-medium text-gray-900">
+    <x-section>
+        <x-section-heading class="-mb-4">
             {{ __('Create a new bank account') }}
-        </h2>
+        </x-section-heading>
 
         <p class="mt-1 mb-6 text-sm text-gray-600">
             {{ __('Note: that investment accounts can only have USD as the account currency.') }}
@@ -46,5 +46,5 @@
                 <x-primary-button>{{ __('Submit') }}</x-primary-button>
             </div>
         </form>
-    </x-content>
+    </x-section>
 </x-app-layout>

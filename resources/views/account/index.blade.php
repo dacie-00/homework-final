@@ -5,13 +5,16 @@
         </h2>
     </x-slot>
 
-    <x-content>
-        @if(session('success'))
-            <div>
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (isset($accounts))
+    @if(session('success'))
+        <div>
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (isset($accounts))
+        <x-section>
+            <x-section-heading>
+                {{ __('Account List') }}
+            </x-section-heading>
             <x-table.table>
                 <x-table.head>
                     <x-table.row>
@@ -56,6 +59,6 @@
                     @endforeach
                 </x-table.body>
             </x-table.table>
-        @endif
-    </x-content>
+        </x-section>
+    @endif
 </x-app-layout>

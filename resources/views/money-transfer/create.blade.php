@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <x-content>
-        <h2 class="text-lg font-medium text-gray-900 mb-6">
+    <x-section>
+        <x-section-heading>
             {{ __('Make a new money transfer') }}
-        </h2>
+        </x-section-heading>
 
         <form method="POST" action="{{ route('money-transfer.store') }}" id="transfer-form">
             @csrf
@@ -55,5 +55,5 @@
                 </div>
             </div>
         </form>
-    </x-content>
+    </x-section>
 </x-app-layout>
