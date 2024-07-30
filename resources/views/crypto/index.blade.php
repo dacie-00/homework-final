@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Cryptocurrency Index - MockMiniBank">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Cryptocurrency index') }}
@@ -88,6 +88,7 @@
                     @endforeach
                 </x-table.body>
             </x-table.table>
+            {{ $currencies->links() }}
         @endif
     </x-content>
 </x-app-layout>

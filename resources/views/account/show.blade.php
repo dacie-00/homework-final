@@ -1,8 +1,7 @@
-@php use App\Models\CryptoCurrency; @endphp
-<x-app-layout>
+<x-app-layout title="Viewing '{{ $account->name }}' {{ $account->type }} account - MockMiniBank">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Viewing '{{ $account->name }}' bank account
+            Viewing '{{ $account->name }}' {{ $account->type }} account
         </h2>
     </x-slot>
 
@@ -73,6 +72,7 @@
                     @endforeach
                 </x-table.body>
             </x-table.table>
+            {{ $cryptoPortfolioItems->links() }}
             <h2 class="font-bold px-6 py-4">Investment history</h2>
             <x-table.table>
                 <x-table.head>
@@ -117,6 +117,7 @@
                     @endforeach
                 </x-table.body>
             </x-table.table>
+            {{ $cryptoTransactions->links() }}
         @endif
         @if(isset($moneyTransfers))
             <h2 class="font-bold px-6 pt-8 pb-4">Transaction history</h2>
@@ -164,6 +165,7 @@
                         </x-table.row>
                     @endforeach
                 </x-table.body>
+                {{ $moneyTransfers->links() }}
             </x-table.table>
         @endif
     </x-content>

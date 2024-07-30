@@ -61,7 +61,7 @@ class AccountController extends Controller
         $moneyTransfers = $account->moneyTransfers()
             ->with($relations)
             ->withPivot('type')
-            ->get();
+            ->paginate(20)->withQueryString();
 
         $data = [
             'account' => $account,
@@ -69,9 +69,9 @@ class AccountController extends Controller
         ];
 
         if ($account->type === 'investment') {
-            $data['cryptoCurrencies'] = CryptoCurrency::query()->get();
-            $data['cryptoTransactions'] = $account->cryptoTransactions;
-            $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems;
+            $data['cryptoCurrencies'] = CryptoCurrency::query()->paginate(10)->withQueryString();
+            $data['cryptoTransactions'] = $account->cryptoTransactions->paginate(10)->withQueryString();
+            $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems->paginate(10)->withQueryString();
         }
 
         return view('account.show', $data);

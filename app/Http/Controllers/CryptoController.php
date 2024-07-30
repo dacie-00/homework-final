@@ -16,12 +16,12 @@ class CryptoController extends Controller
         if ($request->query('q') !== null) {
             $currencies = $cryptoCurrencyService->search(
                 explode(',', $request->query('q'))
-            );
+            )->paginate(25)->withQueryString();
         } else {
             $currencies = CryptoCurrency::query()
-                ->where('rank', '<=', 25)
+                ->where('rank', '<=', 100)
                 ->orderBy('rank')
-                ->get();
+                ->paginate(25)->withQueryString();
         }
         $accounts = Account::query()
             ->where('user_id', Auth::id())
