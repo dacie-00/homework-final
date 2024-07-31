@@ -75,6 +75,9 @@
                     </x-table.head>
                     <x-table.body>
                         @foreach($cryptoPortfolioItems as $cryptoItem)
+                            @php
+                                $profitability = $cryptoCurrencies->where('symbol', $cryptoItem->currency)->first()->price / $cryptoItem->average_price * 100 - 100
+                            @endphp
                             <x-table.row>
                                 <x-table.data>
                                     {{ $cryptoItem->currency }}

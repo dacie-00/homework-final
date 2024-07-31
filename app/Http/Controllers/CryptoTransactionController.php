@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\CryptoCurrency;
-use App\Models\CryptoCurrencyOld;
 use App\Models\CryptoPortfolioItem;
 use App\Models\CryptoTransaction;
 use App\Services\CryptoCurrencyService;

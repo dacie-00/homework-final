@@ -14,8 +14,8 @@
             @csrf
             <div class="space-y-6">
                 <div>
-                    <x-input-label for="account" :value="__('Account to make transfer from')"/>
-                    <x-select id="account" name="account">
+                    <x-input-label for="sender-iban" :value="__('Account to make transfer from')"/>
+                    <x-select id="sender-iban" name="sender-iban">
                         <option selected>Choose an account</option>
                         @foreach($accounts as $account)
                             <option value="{{ $account->iban }}">
@@ -27,12 +27,12 @@
                             </option>
                         @endforeach
                     </x-select>
-                    <x-input-error :messages="$errors->get('account')" class="mt-2"/>
+                    <x-input-error :messages="$errors->get('sender-iban')" class="mt-2"/>
                 </div>
                 <div>
-                    <x-input-label for="iban" :value="__('Receiver account IBAN')"/>
-                    <x-text-input id="iban" name="iban" value="{{ old('iban') }}"></x-text-input>
-                    <x-input-error :messages="$errors->get('iban')" class="mt-2"/>
+                    <x-input-label for="receiver-iban" :value="__('Receiver account IBAN')"/>
+                    <x-text-input id="receiver-iban" name="receiver-iban" value="{{ old('receiver-iban') }}"></x-text-input>
+                    <x-input-error :messages="$errors->get('receiver-iban')" class="mt-2"/>
                 </div>
                 <div>
                     <x-input-label for="name" :value="__('Receiver name')"/>
