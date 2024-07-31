@@ -2,7 +2,6 @@
 
 use App\Models\Account;
 use App\Models\CryptoCurrency;
-use App\Models\CryptoCurrencyOld;
 use App\Models\CryptoPortfolioItem;
 use App\Models\User;
 use App\Services\CryptoCurrencyService;

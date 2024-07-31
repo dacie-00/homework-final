@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Services\CryptoCurrencyService;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\ConnectionException;
+use JsonException;
 
 class FetchCryptoCurrencies extends Command
 {
@@ -24,9 +26,14 @@ class FetchCryptoCurrencies extends Command
     /**
      * Execute the console command.
      */
-    public function handle(CryptoCurrencyService $cryptoCurrencyService): void
+    public function handle(CryptoCurrencyService $cryptoCurrencyService): int
     {
-        $cryptoCurrencyService->getTop();
-        echo 'Done!\n';
+        try {
+            $cryptoCurrencyService->getTop();
+        } catch (JsonException|ConnectionException $e) {
+            echo $e->getMessage();
+            return 1;
+        }
+        return 0;
     }
 }

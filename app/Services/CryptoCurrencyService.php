@@ -4,17 +4,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\CryptoCurrency;
-use App\Models\CryptoCurrencyOld;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\Response;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use JsonException;
-use Mockery\Exception;
-use Nette\Utils\Json;
 
 class CryptoCurrencyService
 {
@@ -26,21 +20,18 @@ class CryptoCurrencyService
         $this->key = $key ?? env('COIN_MARKET_CAP_API_KEY');
     }
 
-//    /**
-//     * @return Collection<CryptoCurrencyOld>
-//     */
+    /**
+     * @throws ConnectionException
+     * @throws JsonException
+     */
     public function getTop(int $page = 1, int $currenciesPerPage = 50): void
     {
-        try {
-            $response = $this->get(
-                'cryptocurrency/listings/latest',
-                [
-                    'start' => 1 + $page * $currenciesPerPage - $currenciesPerPage,
-                    'limit' => $currenciesPerPage,
-                ]);
-        } catch (ConnectionException|JsonException) {
-            return;
-        }
+        $response = $this->get(
+            'cryptocurrency/listings/latest',
+            [
+                'start' => 1 + $page * $currenciesPerPage - $currenciesPerPage,
+                'limit' => $currenciesPerPage,
+            ]);
 
         foreach ($response->data as $rank => $currency) {
             CryptoCurrency::query()->updateOrCreate(

@@ -3,8 +3,6 @@
 use App\Models\Account;
 use App\Models\Currency;
 use App\Models\User;
-use App\Services\ExchangeRateService;
-use Mockery\MockInterface;
 
 it('creates a new money transfer account', function () {
     $user = User::factory()->create();
@@ -38,20 +36,20 @@ it('transfers money between two accounts', function () {
         'amount' => 0,
         'currency' => 'BAR',
     ]);
-    $this->mock(ExchangeRateService::class, function (MockInterface $mock) {
-        $mock
-            ->shouldReceive('get')
-            ->andReturn(Collect([
-                new Currency('FOO', 0.5),
-                new Currency('BAR',  4),
-            ]));
-    });
+    Currency::query()->create([
+        'symbol' => 'FOO',
+        'exchange_rate' => 0.5,
+    ]);
+    Currency::query()->create([
+        'symbol' => 'BAR',
+        'exchange_rate' => 4,
+    ]);
 
     $response = $this->actingAs($user)->post(
         route('money-transfer.store'),
         [
-            'account' => 'sender',
-            'iban' => 'receiver',
+            'sender-iban' => 'sender',
+            'receiver-iban' => 'receiver',
             'name' => $user->name,
             'amount' => 1,
             'note' => null
@@ -85,14 +83,14 @@ it("does not transfer money to a different user's investment account", function 
     $response = $this->actingAs($senderUser)->post(
         route('money-transfer.store'),
         [
-            'account' => 'sender',
-            'iban' => 'receiver',
+            'sender-iban' => 'sender',
+            'receiver-iban' => 'receiver',
             'name' => $receiverUser->name,
             'amount' => 1,
             'note' => null
         ]
     );
-    $response->assertSessionHasErrors('iban');
+    $response->assertSessionHasErrors('receiver-iban');
     $this->assertDatabaseHas('accounts', ['iban' => 'sender', 'amount' => 1000]);
     $this->assertDatabaseHas('accounts', ['iban' => 'receiver', 'amount' => 0]);
 });
@@ -118,14 +116,14 @@ it("does not transfer money from investment account to different user's account"
     $response = $this->actingAs($senderUser)->post(
         route('money-transfer.store'),
         [
-            'account' => 'sender',
-            'iban' => 'receiver',
+            'sender-iban' => 'sender',
+            'receiver-iban' => 'receiver',
             'name' => $receiverUser->name,
             'amount' => 1,
             'note' => null
         ]
     );
-    $response->assertSessionHasErrors('account');
+    $response->assertSessionHasErrors('sender-iban');
     $this->assertDatabaseHas('accounts', ['iban' => 'sender', 'amount' => 1000]);
     $this->assertDatabaseHas('accounts', ['iban' => 'receiver', 'amount' => 0]);
 });
