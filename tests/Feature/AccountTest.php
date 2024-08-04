@@ -3,6 +3,7 @@
 use App\Models\Account;
 use App\Models\Currency;
 use App\Models\User;
+use Carbon\Carbon;
 
 it('creates a new money transfer account', function () {
     $user = User::factory()->create();
@@ -18,6 +19,58 @@ it('creates a new money transfer account', function () {
 
     $this->assertDatabaseHas('accounts', ['name' => 'testAccount', 'currency' => 'EUR']);
     $this->followRedirects($response)->assertStatus(200);
+});
+
+it('deletes an account', function () {
+    Carbon::setTestNow('2024');
+
+    $user = User::factory()->create();
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'amount' => 0
+    ]);
+
+    $response = $this->actingAs($user)->delete(
+        route('account.delete', $account->id),
+    );
+
+    $account->refresh();
+    $this->assertEquals($account->deleted_at, Carbon::now());
+    $this->followRedirects($response)->assertStatus(200);
+});
+
+it('does not delete account that has money in it', function () {
+    $user = User::factory()->create();
+    $account = Account::factory()->create([
+        'user_id' => $user->id,
+        'amount' => 1
+    ]);
+
+    $response = $this->actingAs($user)->delete(
+        route('account.delete', $account->id),
+    );
+
+    $account->refresh();
+    $response->assertSessionHasErrors('delete');
+    $this->assertEquals($account->deleted_at, null);
+    $this->followRedirects($response)->assertStatus(200);
+});
+
+it('does not delete account that belongs to different user', function () {
+    $user = User::factory()->create();
+    $differentUser = User::factory()->create();
+    $account = Account::factory()->create([
+        'user_id' => $differentUser->id,
+        'amount' => 1
+    ]);
+
+    $response = $this->actingAs($user)->delete(
+        route('account.delete', $account->id),
+    );
+
+    $account->refresh();
+    $response->assertStatus(403);
+    $this->assertEquals($account->deleted_at, null);
 });
 
 it('transfers money between two accounts', function () {
@@ -127,3 +180,4 @@ it("does not transfer money from investment account to different user's account"
     $this->assertDatabaseHas('accounts', ['iban' => 'sender', 'amount' => 1000]);
     $this->assertDatabaseHas('accounts', ['iban' => 'receiver', 'amount' => 0]);
 });
+

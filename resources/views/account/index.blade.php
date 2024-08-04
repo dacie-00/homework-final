@@ -10,6 +10,9 @@
             {{ session('success') }}
         </div>
     @endif
+    @if($errors->any())
+        {!! implode('', $errors->all('<div>:message</div>')) !!}
+    @endif
     @if (isset($accounts))
         <x-section>
             <x-section-heading>
@@ -51,9 +54,16 @@
                             </x-table.data>
                             <x-table.data>
                                 <a
-                                    href={{route('account.show', ['account' => $account->id])}}>
+                                    href={{route('account.show', ['account' => $account])}}>
                                     {{ __('View info') }}
                                 </a>
+                            </x-table.data>
+                            <x-table.data>
+                                <form action="{{ route('account.delete', $account) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" value="Delete">
+                                </form>
                             </x-table.data>
                         </x-table.row>
                     @endforeach

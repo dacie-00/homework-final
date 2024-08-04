@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('currency');
             $table->integer('amount');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

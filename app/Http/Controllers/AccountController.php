@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteAccountRequest;
 use App\Models\Account;
 use App\Models\CryptoCurrency;
 use App\Models\Currency;
@@ -75,5 +76,12 @@ class AccountController extends Controller
         }
 
         return view('account.show', $data);
+    }
+
+    public function delete(DeleteAccountRequest $request, Account $account): RedirectResponse
+    {
+        $account->delete();
+
+        return redirect(route('account.index'))->with('success', 'Successfully deleted account.');
     }
 }

@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/accounts', [AccountController::class, 'store'])->name('account.store');
     Route::get('/accounts/create', [AccountController::class, 'create'])->name('account.create');
     Route::get('/accounts/{account}', [AccountController::class, 'show'])->name('account.show');
+    Route::delete('/accounts/{account}', [AccountController::class, 'delete'])->name('account.delete');
 
     Route::get('/money-transfer/create', [MoneyTransferController::class, 'create'])->name('money-transfer.create');
     Route::post('/money-transfer/store', [MoneyTransferController::class, 'store'])->name('money-transfer.store');
