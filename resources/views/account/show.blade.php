@@ -85,11 +85,8 @@
                                 <x-table.data>
                                     {{ $cryptoItem->amount }}
                                 </x-table.data>
-                                <x-table.data>
-                                    {{ number_format(
-                                        $cryptoCurrencies->where('symbol', $cryptoItem->currency)->first()->price / $cryptoItem->average_price * 100 - 100,
-                                        2) . '%'
-                                    }}
+                                <x-table.data class="{{$profitability >= 0 ? '!text-green-500' : '!text-red-500' }}">
+                                    {{ number_format($profitability, 2) . '%' }}
                                 </x-table.data>
                             </x-table.row>
                         @endforeach
