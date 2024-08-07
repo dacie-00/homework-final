@@ -28,7 +28,7 @@ class DeleteAccountRequest extends FormRequest
 
                 if ($account->amount > 0) {
                     throw ValidationException::withMessages([
-                        'delete' => 'Can only delete accounts with no funds.'
+                        'account' => 'Cannot delete account with funds in it.'
                     ]);
                 }
 

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         $user = Auth::user();
 
@@ -82,6 +82,7 @@ class AccountController extends Controller
     {
         $account->delete();
 
-        return redirect(route('account.index'))->with('success', 'Successfully deleted account.');
+        $request->session()->flash('success', 'Account successfully deleted.');
+        return redirect(route('account.index'));
     }
 }

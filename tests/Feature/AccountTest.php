@@ -51,7 +51,7 @@ it('does not delete account that has money in it', function () {
     );
 
     $account->refresh();
-    $response->assertSessionHasErrors('delete');
+    $response->assertSessionHasErrors('account');
     $this->assertEquals($account->deleted_at, null);
     $this->followRedirects($response)->assertStatus(200);
 });

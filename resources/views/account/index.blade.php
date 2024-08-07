@@ -5,19 +5,21 @@
         </h2>
     </x-slot>
 
-    @if(session('success'))
-        <div>
-            {{ session('success') }}
-        </div>
-    @endif
-    @if($errors->any())
-        {!! implode('', $errors->all('<div>:message</div>')) !!}
-    @endif
     @if (isset($accounts))
         <x-section>
             <x-section-heading>
                 {{ __('Account List') }}
             </x-section-heading>
+            <div class="text-center">
+                @if(session('success'))
+                    <div>
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if($errors->any())
+                    {!! implode('', $errors->all('<div class="text-red-400">:message</div>')) !!}
+                @endif
+            </div>
             <x-table.table>
                 <x-table.head>
                     <x-table.row>
