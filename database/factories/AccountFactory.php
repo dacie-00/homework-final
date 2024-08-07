@@ -22,19 +22,12 @@ class AccountFactory extends Factory
     {
         return [
             'id' => fake()->uuid(),
-            'user_id' => User::query()->get()->random()->id,
+            'user_id' => User::factory()->create()->id,
             'iban' => fake()->iban(),
             'type' => 'checking',
             'name' => fake()->colorName(),
             'currency' => Arr::random(Currency::CURRENCY_SYMBOLS),
             'amount' => fake()->numberBetween(100000, 1000000),
         ];
-    }
-
-    public function forUser(string $userId): self
-    {
-        return $this->state(fn(array $attributes) => [
-            'user_id' => $userId,
-        ]);
     }
 }

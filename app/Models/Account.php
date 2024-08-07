@@ -16,6 +16,9 @@ class Account extends Model
 
     public $incrementing = false;
 
+    public const TYPE_CHECKING = 'checking';
+    public const TYPE_INVESTMENT = 'investment';
+
     protected $fillable = [
         'name',
         'user_id',

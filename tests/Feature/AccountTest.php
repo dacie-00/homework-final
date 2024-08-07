@@ -4,6 +4,7 @@ use App\Models\Account;
 use App\Models\Currency;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 it('creates a new money transfer account', function () {
     $user = User::factory()->create();

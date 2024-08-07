@@ -19,7 +19,7 @@ class CryptoPortfolioItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_id' => Account::query()->where('type', 'investment')->get()->random()->id,
+            'account_id' => Account::factory()->create(['type' => Account::TYPE_INVESTMENT]),
             'amount' => fake()->numberBetween(1, 10),
             'currency' => fake()->randomElement(['BTC', 'ETH', 'LTC', 'XRP', 'BCH', 'USDT']),
             'average_price' => fake()->numberBetween(1, 1000),

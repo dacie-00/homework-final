@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@test.test',
             'password' => 'testtest',
         ]);
-        Account::factory(2)->forUser('testUser')->create();
-        Account::factory(1)->forUser('testUser')->create(['type' => 'investment']);
+        Account::factory(2)->create(['user_id' => 'testUser']);
+        Account::factory(1)->create(['user_id' => 'testUser', 'type' => Account::TYPE_INVESTMENT]);
 
         MoneyTransfer::factory(100)->create();
 
