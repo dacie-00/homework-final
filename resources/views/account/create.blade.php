@@ -11,7 +11,7 @@
         </x-section-heading>
 
         <p class="mt-1 mb-6 text-sm text-gray-600">
-            {{ __('Note: that investment accounts can only have USD as the account currency.') }}
+            {{ __('Note: investment accounts can only have USD as the account currency.') }}
         </p>
         <form x-data="{type: 'checking', value: ''}" method="POST" action="{{ route('account.store') }}">
             @csrf
