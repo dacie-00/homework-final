@@ -21,6 +21,13 @@
             <x-section-heading>
                 {{ __('Sell Currency') }}
             </x-section-heading>
+            <div class="text-center">
+                @if(session('sell-success'))
+                    <div>
+                        {{ session('sell-success') }}
+                    </div>
+                @endif
+            </div>
             <form method="POST" action="{{ route('crypto-transaction.store') }}" id="transfer-form">
                 @csrf
                 <input hidden="hidden" id="type" name="type" value="sell">

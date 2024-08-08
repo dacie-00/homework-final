@@ -59,8 +59,11 @@ class CryptoTransactionController extends Controller
             ]);
         });
 
-        $verb = $validated['type'] === 'sell' ? 'sold' : 'bought';
+        if ($validated['type'] === 'sell') {
+            return redirect(route('account.show', ['account' => $account->id]))
+                ->with('sell-success', "Successfully sold {$validated['amount']} $currency->symbol!");
+        }
         return redirect(route('crypto.index'))
-            ->with('buy-success', "Successfully $verb {$validated['amount']} $currency->symbol!");
+            ->with('buy-success', "Successfully bought {$validated['amount']} $currency->symbol!");
     }
 }
