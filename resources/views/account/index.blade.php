@@ -35,8 +35,6 @@
                         <x-table.header>
                             {{ __('Available funds') }}
                         </x-table.header>
-                        <x-table.header>
-                        </x-table.header>
                     </x-table.row>
                 </x-table.head>
                 <x-table.body>
