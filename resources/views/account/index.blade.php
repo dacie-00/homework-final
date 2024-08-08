@@ -6,7 +6,7 @@
     </x-slot>
 
     @if (isset($accounts))
-        <x-section>
+        <x-section class="mt-8">
             <x-section-heading>
                 {{ __('Account List') }}
             </x-section-heading>
@@ -62,7 +62,7 @@
                                 <form action="{{ route('account.delete', $account) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <input class="text-red-400 hover:underline" type="submit" value="Delete">
+                                    <input class="text-red-400 cursor-pointer" type="submit" value="Delete">
                                 </form>
                             </x-table.data>
                         </x-table.row>

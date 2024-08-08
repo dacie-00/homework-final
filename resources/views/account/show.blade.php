@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-section>
+    <x-section class="mt-8">
         <x-section-heading>
             {{ __('Info') }}
         </x-section-heading>
@@ -16,7 +16,7 @@
 
         </div>
     </x-section>
-    @if($account->type === $account->TYPE_INVESTMENT)
+    @if($account->type === 'investment')
         <x-section>
             <x-section-heading>
                 {{ __('Sell Currency') }}
@@ -76,7 +76,7 @@
                     <x-table.body>
                         @foreach($cryptoPortfolioItems as $cryptoItem)
                             @php
-                                $profitability = $cryptoCurrencies->where('symbol', $cryptoItem->currency)->first()->price / $cryptoItem->average_price * 100 - 100
+                                $profitability = $cryptoItem->cryptoCurrency->price / $cryptoItem->average_price * 100 - 100
                             @endphp
                             <x-table.row>
                                 <x-table.data>

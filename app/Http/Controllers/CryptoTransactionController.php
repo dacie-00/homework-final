@@ -61,6 +61,6 @@ class CryptoTransactionController extends Controller
 
         $verb = $validated['type'] === 'sell' ? 'sold' : 'bought';
         return redirect(route('crypto.index'))
-            ->with('success', "Successfully $verb {$validated['amount']} $currency->symbol!");
+            ->with('buy-success', "Successfully $verb {$validated['amount']} $currency->symbol!");
     }
 }

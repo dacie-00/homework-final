@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-section>
+    <x-section class="mt-8">
         <x-section-heading class="-mb-4">
             {{ __('Create a new bank account') }}
         </x-section-heading>

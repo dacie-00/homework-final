@@ -9,10 +9,17 @@
         <h2 class="text-lg font-medium text-gray-900">{{ session('success') }}</h2>
     @endif
 
-    <x-section class="pt-8">
+    <x-section class="mt-8">
         <x-section-heading>
             {{ __('Buy Currency') }}
         </x-section-heading>
+        <div class="text-center">
+            @if(session('buy-success'))
+                <div>
+                    {{ session('buy-success') }}
+                </div>
+            @endif
+        </div>
         <form method="POST" action="{{ route('crypto-transaction.store') }}" id="transfer-form">
             @csrf
             <div class="space-y-6">
@@ -63,37 +70,27 @@
 
     <x-section>
         <x-section-heading>
-            {{ __('Search') }}
-        </x-section-heading>
-        <form method="GET" action="{{ route('crypto.index') }}" id="search-form">
-            <div class="space-y-6">
-                <div>
-                    <x-input-label for="q" :value="__('Search for currency')"/>
-                    <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
-                </div>
-                <div>
-                    <x-primary-button>{{ __('Submit') }}</x-primary-button>
-                </div>
-            </div>
-        </form>
-    </x-section>
-
-    <x-section>
-        <x-section-heading>
             {{ __('Currency List') }}
         </x-section-heading>
+        <form class="w-fit mx-auto" method="GET" action="{{ route('crypto.index') }}" id="search-form">
+            <x-input-label for="q" :value="__('Find by ticker')"/>
+            <div class="flex space-x-6" >
+                <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
+                <x-primary-button>{{ __('Submit') }}</x-primary-button>
+            </div>
+        </form>
         <div class="space-y-6">
             @if ($currencies->isEmpty())
                 <p>No currencies found!</p>
             @else
                 <div>
-                    <x-table.table>
+                    <x-table.table class="text-center">
                         <x-table.head>
                             <x-table.row>
-                                <x-table.header>
+                                <x-table.header class="!text-center">
                                     {{ __('Currency') }}
                                 </x-table.header>
-                                <x-table.header>
+                                <x-table.header class="!text-center">
                                     {{ __('Price') }}
                                 </x-table.header>
                             </x-table.row>

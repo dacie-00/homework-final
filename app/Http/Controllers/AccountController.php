@@ -55,10 +55,7 @@ class AccountController extends Controller
     public function show(Account $account): View
     {
         $relations = ['accounts.user'];
-        if ($account->type === Account::TYPE_INVESTMENT) {
-            $relations[] = 'accounts.cryptoTransactions';
-            $relations[] = 'accounts.cryptoPortfolioItems';
-        }
+
         $moneyTransfers = $account->moneyTransfers()
             ->with($relations)
             ->withPivot('type')
@@ -69,8 +66,8 @@ class AccountController extends Controller
             'moneyTransfers' => $moneyTransfers,
         ];
 
+        // TODO: is this needed?
         if ($account->type === Account::TYPE_INVESTMENT) {
-            $data['cryptoCurrencies'] = CryptoCurrency::query()->paginate(10)->withQueryString();
             $data['cryptoTransactions'] = $account->cryptoTransactions->paginate(10)->withQueryString();
             $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems->paginate(10)->withQueryString();
         }

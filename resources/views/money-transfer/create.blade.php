@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <x-section>
+    <x-section class="mt-8">
         <x-section-heading>
             {{ __('Make a new money transfer') }}
         </x-section-heading>
