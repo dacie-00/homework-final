@@ -66,7 +66,6 @@ class AccountController extends Controller
             'moneyTransfers' => $moneyTransfers,
         ];
 
-        // TODO: is this needed?
         if ($account->type === Account::TYPE_INVESTMENT) {
             $data['cryptoTransactions'] = $account->cryptoTransactions->paginate(10)->withQueryString();
             $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems->paginate(10)->withQueryString();
