@@ -16,7 +16,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', function () {return redirect(route('account.index'));})->name('dashboard');
+    Route::get('/dashboard', function () {
+        return redirect(route('account.index'));
+    })->name('dashboard');
 
     Route::get('/accounts', [AccountController::class, 'index'])->name('account.index');
     Route::post('/accounts', [AccountController::class, 'store'])->name('account.store');
@@ -33,4 +35,4 @@ Route::middleware('auth')->group(function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

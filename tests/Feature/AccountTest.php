@@ -4,7 +4,6 @@ use App\Models\Account;
 use App\Models\Currency;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 it('creates a new money transfer account', function () {
     $user = User::factory()->create();
@@ -14,7 +13,7 @@ it('creates a new money transfer account', function () {
         [
             'name' => 'testAccount',
             'type' => 'checking',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ]
     );
 
@@ -28,7 +27,7 @@ it('deletes an account', function () {
     $user = User::factory()->create();
     $account = Account::factory()->create([
         'user_id' => $user->id,
-        'amount' => 0
+        'amount' => 0,
     ]);
 
     $response = $this->actingAs($user)->delete(
@@ -44,7 +43,7 @@ it('does not delete account that has money in it', function () {
     $user = User::factory()->create();
     $account = Account::factory()->create([
         'user_id' => $user->id,
-        'amount' => 1
+        'amount' => 1,
     ]);
 
     $response = $this->actingAs($user)->delete(
@@ -62,7 +61,7 @@ it('does not delete account that belongs to different user', function () {
     $differentUser = User::factory()->create();
     $account = Account::factory()->create([
         'user_id' => $differentUser->id,
-        'amount' => 1
+        'amount' => 1,
     ]);
 
     $response = $this->actingAs($user)->delete(
@@ -106,7 +105,7 @@ it('transfers money between two accounts', function () {
             'receiver-iban' => 'receiver',
             'name' => $user->name,
             'amount' => 1,
-            'note' => null
+            'note' => null,
         ]
     );
     $response->assertRedirect(route('account.index'));
@@ -141,7 +140,7 @@ it("does not transfer money to a different user's investment account", function 
             'receiver-iban' => 'receiver',
             'name' => $receiverUser->name,
             'amount' => 1,
-            'note' => null
+            'note' => null,
         ]
     );
     $response->assertSessionHasErrors('receiver-iban');
@@ -174,7 +173,7 @@ it("does not transfer money from investment account to different user's account"
             'receiver-iban' => 'receiver',
             'name' => $receiverUser->name,
             'amount' => 1,
-            'note' => null
+            'note' => null,
         ]
     );
     $response->assertSessionHasErrors('sender-iban');

@@ -38,7 +38,7 @@ class StoreCryptoTransactionRequest extends FormRequest
     public function after(CryptoCurrencyService $cryptoCurrencyService): array
     {
         return [
-            function (Validator $validator) use($cryptoCurrencyService) {
+            function (Validator $validator) use ($cryptoCurrencyService) {
                 $validated = $validator->validated();
                 /** @var ?Account $account */
                 $account = Account::query()->where('iban', '=', $validated['account'])->first();
@@ -80,7 +80,7 @@ class StoreCryptoTransactionRequest extends FormRequest
                         ]);
                     }
                 }
-            }
+            },
         ];
     }
 }

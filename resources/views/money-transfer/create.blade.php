@@ -31,7 +31,8 @@
                 </div>
                 <div>
                     <x-input-label for="receiver-iban" :value="__('Receiver account IBAN')"/>
-                    <x-text-input id="receiver-iban" name="receiver-iban" value="{{ old('receiver-iban') }}"></x-text-input>
+                    <x-text-input id="receiver-iban" name="receiver-iban"
+                                  value="{{ old('receiver-iban') }}"></x-text-input>
                     <x-input-error :messages="$errors->get('receiver-iban')" class="mt-2"/>
                 </div>
                 <div>

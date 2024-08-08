@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Account;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -28,14 +27,14 @@ class DeleteAccountRequest extends FormRequest
 
                 if ($account->amount > 0) {
                     throw ValidationException::withMessages([
-                        'account' => 'Cannot delete account with funds in it.'
+                        'account' => 'Cannot delete account with funds in it.',
                     ]);
                 }
 
                 if ($account->user_id !== Auth::id()) {
                     abort(403);
                 }
-            }
+            },
         ];
     }
 }

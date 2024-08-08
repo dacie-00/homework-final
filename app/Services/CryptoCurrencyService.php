@@ -49,7 +49,7 @@ class CryptoCurrencyService
     {
         $symbols = array_map(fn($code) => strtoupper($code), $symbols);
         $newSymbols = [];
-        foreach($symbols as &$symbol) {
+        foreach ($symbols as &$symbol) {
             $currency = CryptoCurrency::query()->where('symbol', $symbol)->first();
             if ($currency !== null) {
                 $symbol = $currency;
@@ -77,7 +77,7 @@ class CryptoCurrencyService
             return collect();
         }
 
-        foreacH($symbols as $i => &$symbol) {
+        foreach ($symbols as $i => &$symbol) {
             if (is_string($symbol) === false) {
                 continue;
             }
@@ -89,7 +89,7 @@ class CryptoCurrencyService
             $symbol = CryptoCurrency::query()->updateOrCreate(
                 ['symbol' => $currency->symbol],
                 [
-                    'price' => $currency->quote->USD->price
+                    'price' => $currency->quote->USD->price,
                 ]);
         }
         unset($symbol);

@@ -23,7 +23,7 @@ it('buys cryptocurrency', function () {
                 CryptoCurrency::query()->create(
                     [
                         'symbol' => 'FOO',
-                        'price' => 4000
+                        'price' => 4000,
                     ]
                 ),
             ]));
@@ -47,13 +47,13 @@ it('buys cryptocurrency', function () {
     $this->assertDatabaseHas('accounts',
         [
             'iban' => 'ibanFoo',
-            'amount' => 88000
+            'amount' => 88000,
         ]);
     $this->assertDatabaseHas('crypto_portfolio_items',
         [
             'account_id' => $account->id,
             'amount' => 3,
-            'currency' => 'FOO'
+            'currency' => 'FOO',
         ]);
 });
 
@@ -78,7 +78,7 @@ it('sells cryptocurrency', function () {
                 CryptoCurrency::query()->create(
                     [
                         'symbol' => 'FOO',
-                        'price' => 4000
+                        'price' => 4000,
                     ]
                 ),
             ]));
@@ -102,13 +102,13 @@ it('sells cryptocurrency', function () {
     $this->assertDatabaseHas('accounts',
         [
             'iban' => 'ibanFoo',
-            'amount' => 112000
+            'amount' => 112000,
         ]);
     $this->assertDatabaseHas('crypto_portfolio_items',
         [
             'account_id' => $account->id,
             'amount' => 4.5,
-            'currency' => 'FOO'
+            'currency' => 'FOO',
         ]);
 });
 
@@ -129,7 +129,7 @@ it('fails to buy cryptocurrency it cannot afford', function () {
                 CryptoCurrency::query()->create(
                     [
                         'symbol' => 'FOO',
-                        'price' => 4000
+                        'price' => 4000,
                     ]
                 ),
             ]));
@@ -152,13 +152,13 @@ it('fails to buy cryptocurrency it cannot afford', function () {
     $this->assertDatabaseHas('accounts',
         [
             'iban' => 'ibanFoo',
-            'amount' => 11000
+            'amount' => 11000,
         ]);
     $this->assertDatabaseMissing('crypto_portfolio_items',
         [
             'account_id' => $account->id,
             'amount' => 3,
-            'currency' => 'FOO'
+            'currency' => 'FOO',
         ]);
 });
 
@@ -183,7 +183,7 @@ it('fails to sell cryptocurrency it does not have', function () {
                 CryptoCurrency::query()->create(
                     [
                         'symbol' => 'FOO',
-                        'price' => 4000
+                        'price' => 4000,
                     ]
                 ),
             ]));
@@ -206,12 +206,12 @@ it('fails to sell cryptocurrency it does not have', function () {
     $this->assertDatabaseHas('accounts',
         [
             'iban' => 'ibanFoo',
-            'amount' => 100000
+            'amount' => 100000,
         ]);
     $this->assertDatabaseHas('crypto_portfolio_items',
         [
             'account_id' => $account->id,
             'amount' => 1.5,
-            'currency' => 'FOO'
+            'currency' => 'FOO',
         ]);
 });

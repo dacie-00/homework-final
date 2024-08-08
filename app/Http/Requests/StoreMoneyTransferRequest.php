@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Models\Account;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
@@ -83,7 +82,7 @@ class StoreMoneyTransferRequest extends FormRequest
                         'sender-iban' => 'Sending and receiving accounts cannot be the same account.',
                     ]);
                 }
-            }
+            },
         ];
     }
 }

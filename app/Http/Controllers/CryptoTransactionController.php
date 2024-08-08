@@ -9,10 +9,7 @@ use App\Models\CryptoPortfolioItem;
 use App\Models\CryptoTransaction;
 use App\Services\CryptoCurrencyService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class CryptoTransactionController extends Controller
 {
