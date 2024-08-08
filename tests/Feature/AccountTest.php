@@ -12,7 +12,7 @@ it('creates a new money transfer account', function () {
         route('account.store'),
         [
             'name' => 'testAccount',
-            'type' => 'checking',
+            'type' => Account::TYPE_CHECKING,
             'currency' => 'EUR',
         ]
     );
@@ -78,14 +78,14 @@ it('transfers money between two accounts', function () {
     Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'sender',
-        'type' => 'checking',
+        'type' => Account::TYPE_CHECKING,
         'amount' => 1000,
         'currency' => 'FOO',
     ]);
     Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'receiver',
-        'type' => 'checking',
+        'type' => Account::TYPE_CHECKING,
         'amount' => 0,
         'currency' => 'BAR',
     ]);
@@ -121,14 +121,14 @@ it("does not transfer money to a different user's investment account", function 
     Account::factory()->create([
         'user_id' => $senderUser->id,
         'iban' => 'sender',
-        'type' => 'checking',
+        'type' => Account::TYPE_CHECKING,
         'amount' => 1000,
         'currency' => 'EUR',
     ]);
     Account::factory()->create([
         'user_id' => $receiverUser->id,
         'iban' => 'receiver',
-        'type' => 'investment',
+        'type' => Account::TYPE_INVESTMENT,
         'amount' => 0,
         'currency' => 'EUR',
     ]);
@@ -154,14 +154,14 @@ it("does not transfer money from investment account to different user's account"
     Account::factory()->create([
         'user_id' => $senderUser->id,
         'iban' => 'sender',
-        'type' => 'investment',
+        'type' => Account::TYPE_INVESTMENT,
         'amount' => 1000,
         'currency' => 'EUR',
     ]);
     Account::factory()->create([
         'user_id' => $receiverUser->id,
         'iban' => 'receiver',
-        'type' => 'checking',
+        'type' => Account::TYPE_CHECKING,
         'amount' => 0,
         'currency' => 'EUR',
     ]);

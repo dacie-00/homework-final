@@ -43,7 +43,7 @@ class AccountController extends Controller
                 'user_id' => Auth::id(),
                 'iban' => fake()->iban(),
                 'type' => $validated['type'],
-                'currency' => $validated['type'] === 'checking' ? strtoupper($validated['currency']) : 'USD',
+                'currency' => $validated['type'] === Account::TYPE_CHECKING ? strtoupper($validated['currency']) : 'USD',
                 'amount' => 100000,
             ]
 
@@ -55,7 +55,7 @@ class AccountController extends Controller
     public function show(Account $account): View
     {
         $relations = ['accounts.user'];
-        if ($account->type === 'investment') {
+        if ($account->type === Account::TYPE_INVESTMENT) {
             $relations[] = 'accounts.cryptoTransactions';
             $relations[] = 'accounts.cryptoPortfolioItems';
         }
@@ -69,7 +69,7 @@ class AccountController extends Controller
             'moneyTransfers' => $moneyTransfers,
         ];
 
-        if ($account->type === 'investment') {
+        if ($account->type === Account::TYPE_INVESTMENT) {
             $data['cryptoCurrencies'] = CryptoCurrency::query()->paginate(10)->withQueryString();
             $data['cryptoTransactions'] = $account->cryptoTransactions->paginate(10)->withQueryString();
             $data['cryptoPortfolioItems'] = $account->cryptoPortfolioItems->paginate(10)->withQueryString();

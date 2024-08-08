@@ -16,7 +16,7 @@
 
         </div>
     </x-section>
-    @if($account->type === 'investment')
+    @if($account->type === $account->TYPE_INVESTMENT)
         <x-section>
             <x-section-heading>
                 {{ __('Sell Currency') }}

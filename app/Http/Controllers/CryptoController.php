@@ -25,7 +25,7 @@ class CryptoController extends Controller
         }
         $accounts = Account::query()
             ->where('user_id', Auth::id())
-            ->where('type', 'investment')
+            ->where('type', Account::TYPE_INVESTMENT)
             ->get();
 
         return view(

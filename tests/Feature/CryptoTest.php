@@ -12,7 +12,7 @@ it('buys cryptocurrency', function () {
     $account = Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'ibanFoo',
-        'type' => 'investment',
+        'type' => Account::TYPE_INVESTMENT,
         'amount' => 100000,
         'currency' => 'USD',
     ]);
@@ -62,7 +62,7 @@ it('sells cryptocurrency', function () {
     $account = Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'ibanFoo',
-        'type' => 'investment',
+        'type' => Account::TYPE_INVESTMENT,
         'amount' => 100000,
         'currency' => 'USD',
     ]);
@@ -118,7 +118,7 @@ it('fails to buy cryptocurrency it cannot afford', function () {
     $account = Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'ibanFoo',
-        'type' => 'investment',
+        'type' => Account::TYPE_INVESTMENT,
         'amount' => 11000,
         'currency' => 'USD',
     ]);
@@ -167,7 +167,7 @@ it('fails to sell cryptocurrency it does not have', function () {
     $account = Account::factory()->create([
         'user_id' => $user->id,
         'iban' => 'ibanFoo',
-        'type' => 'investment',
+        'type' => Account::TYPE_INVESTMENT,
         'amount' => 100000,
         'currency' => 'USD',
     ]);

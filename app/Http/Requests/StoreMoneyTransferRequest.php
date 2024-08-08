@@ -65,13 +65,13 @@ class StoreMoneyTransferRequest extends FormRequest
                     ]);
                 }
 
-                if ($senderAccount->type === 'investment' && $receiverAccount->user->isNot($senderAccount->user)) {
+                if ($senderAccount->type === Account::TYPE_INVESTMENT && $receiverAccount->user->isNot($senderAccount->user)) {
                     throw ValidationException::withMessages([
                         'sender-iban' => 'Cannot make transactions from investment account to other users.',
                     ]);
                 }
 
-                if ($receiverAccount->type === 'investment' && $receiverAccount->user->isNot($senderAccount->user)) {
+                if ($receiverAccount->type === Account::TYPE_INVESTMENT && $receiverAccount->user->isNot($senderAccount->user)) {
                     throw ValidationException::withMessages([
                         'receiver-iban' => 'No account with this IBAN and name.',
                     ]);

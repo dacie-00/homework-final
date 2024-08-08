@@ -24,7 +24,7 @@ class AccountFactory extends Factory
             'id' => fake()->uuid(),
             'user_id' => User::factory()->create()->id,
             'iban' => fake()->iban(),
-            'type' => 'checking',
+            'type' => Account::TYPE_CHECKING,
             'name' => fake()->colorName(),
             'currency' => Arr::random(Currency::CURRENCY_SYMBOLS),
             'amount' => fake()->numberBetween(100000, 1000000),
