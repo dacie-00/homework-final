@@ -87,7 +87,11 @@
                             @endphp
                             <x-table.row>
                                 <x-table.data>
-                                    {{ $cryptoItem->currency }}
+                                    <div class="flex gap-x-2 w-fit items-center">
+                                        <img src="{{ Vite::asset($cryptoItem->cryptoCurrency->icon()) }}" alt="{{ $cryptoItem->cryptoCurrency->symbol }} symbol"
+                                             class="w-4 h-4">
+                                        {{ $cryptoItem->currency }}
+                                    </div>
                                 </x-table.data>
                                 <x-table.data>
                                     {{ $cryptoItem->amount }}

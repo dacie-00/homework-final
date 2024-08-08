@@ -84,13 +84,13 @@
                 <p>No currencies found!</p>
             @else
                 <div>
-                    <x-table.table class="text-center">
+                    <x-table.table class="w-1/2 mx-auto">
                         <x-table.head>
                             <x-table.row>
-                                <x-table.header class="!text-center">
+                                <x-table.header>
                                     {{ __('Currency') }}
                                 </x-table.header>
-                                <x-table.header class="!text-center">
+                                <x-table.header>
                                     {{ __('Price') }}
                                 </x-table.header>
                             </x-table.row>
@@ -99,7 +99,11 @@
                             @foreach($currencies as $currency)
                                 <x-table.row>
                                     <x-table.data>
-                                        {{ $currency->symbol }}
+                                        <div class="flex gap-x-2 w-fit items-center">
+                                            <img src="{{ Vite::asset($currency->icon()) }}" alt="{{ $currency->symbol }} symbol"
+                                                 class="w-4 h-4">
+                                            {{ $currency->symbol }}
+                                        </div>
                                     </x-table.data>
                                     <x-table.data>
                                         {{ $currency->price . ' USD' }}

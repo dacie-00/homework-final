@@ -6,6 +6,7 @@ use App\Http\Requests\DeleteAccountRequest;
 use App\Models\Account;
 use App\Models\CryptoCurrency;
 use App\Models\Currency;
+use App\Services\CryptoCurrencyService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request, CryptoCurrencyService $cryptoCurrencyService): View
     {
         $user = Auth::user();
 

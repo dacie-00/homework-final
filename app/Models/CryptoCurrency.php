@@ -14,4 +14,9 @@ class CryptoCurrency extends Model
         'symbol',
         'price',
     ];
+
+    public function icon(): ?string
+    {
+        return 'public/storage/cryptocurrency-' . $this->symbol . '.png';
+    }
 }

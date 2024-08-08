@@ -8,6 +8,8 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use JsonException;
 
 class CryptoCurrencyService
@@ -96,6 +98,34 @@ class CryptoCurrencyService
 
         $symbols = array_values($symbols);
         return collect($symbols);
+    }
+
+    /**
+     * @param string[] $symbols
+     * @throws ConnectionException
+     * @throws JsonException
+     */
+    public function fetchIcons(array $symbols): void
+    {
+        $symbols = array_map(fn($code) => strtoupper($code), $symbols);
+
+        $response = $this->get(
+            'cryptocurrency/info',
+            [
+                'symbol' => implode(',', $symbols),
+            ]);
+
+        foreach ($symbols as $symbol) {
+            if (!isset($response->data->$symbol)) {
+                continue;
+            }
+            $data = file_get_contents($response->data->$symbol->logo);
+            if ($data !== false) {
+                Storage::disk('public')
+                    ->put('cryptocurrency-' . $symbol . '.png', $data);
+            }
+        }
+
     }
 
     /**
