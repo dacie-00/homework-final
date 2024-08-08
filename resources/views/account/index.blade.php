@@ -55,16 +55,16 @@
                                 {{ number_format($account->amount / 100, 2) . ' ' .  $account->currency}}
                             </x-table.data>
                             <x-table.data>
-                                <a
+                                <a class="text-blue-500 hover:underline"
                                     href={{route('account.show', ['account' => $account])}}>
-                                    {{ __('View info') }}
+                                    {{ __('View') }}
                                 </a>
                             </x-table.data>
                             <x-table.data>
                                 <form action="{{ route('account.delete', $account) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="submit" value="Delete">
+                                    <input class="text-red-400 hover:underline" type="submit" value="Delete">
                                 </form>
                             </x-table.data>
                         </x-table.row>
