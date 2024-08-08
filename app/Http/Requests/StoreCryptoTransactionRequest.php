@@ -56,7 +56,7 @@ class StoreCryptoTransactionRequest extends FormRequest
                     $ownedCurrency = $account->cryptoPortfolioItems()->where('currency', $validated['currency'])->get();
                     if ($ownedCurrency->isEmpty() || $ownedCurrency->first()->amount < $validated['amount']) {
                         throw ValidationException::withMessages([
-                            'account' => "You don't have enough of this currency to sell.",
+                            'amount' => "You don't have enough of this currency to sell.",
                         ]);
                     }
                 }
