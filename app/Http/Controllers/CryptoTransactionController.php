@@ -34,7 +34,6 @@ class CryptoTransactionController extends Controller
 
 
             if ($validated['type'] === 'buy') {
-
                 // get ratio of the amount currency in this purchase relative to total in wallet
                 $ratio = $validated['amount'] / ($cryptoItem->amount + $validated['amount']);
                 $purchaseAverage = $price / $validated['amount'];
@@ -43,12 +42,19 @@ class CryptoTransactionController extends Controller
 
                 $account->amount -= $price;
                 $cryptoItem->amount += $validated['amount'];
-            } else {
+                $cryptoItem->save();
+            }
+
+            if ($validated['type'] === 'sell') {
                 $account->amount += $price;
                 $cryptoItem->amount -= $validated['amount'];
+                if ($cryptoItem->amount === 0) {
+                    $cryptoItem->delete();
+                } else {
+                    $cryptoItem->save();
+                }
             }
             $account->save();
-            $cryptoItem->save();
 
             CryptoTransaction::query()->create([
                 'account_id' => $account->id,
