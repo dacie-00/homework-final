@@ -29,7 +29,7 @@
                     <x-select id="account" name="account">
                         <option selected>Choose an account</option>
                         @foreach($accounts as $account)
-                            <option value="{{ $account->iban }}">
+                            <option value="{{ $account->iban }}" @if(old('account') === $account->iban) {{ 'selected' }} @endif>
                                 {{
                                     $account->name . ' (' .
                                     number_format($account->amount / 100, 2) . ' ' .
@@ -44,7 +44,7 @@
                     <x-input-label for="currency" :value="__('Currency')"/>
                     <x-select id="currency" name="currency">
                         @foreach($currencies as $currency)
-                            <option value="{{ $currency->symbol }}">
+                            <option value="{{ $currency->symbol }}" @if(old('currency') === $currency->symbol) {{ 'selected' }} @endif>
                                 {{
                                     $currency->symbol . ' (' .
                                     number_format($currency->price, 4) . ' USD)'

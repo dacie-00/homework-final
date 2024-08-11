@@ -18,7 +18,7 @@
                     <x-select id="sender-iban" name="sender-iban">
                         <option selected>Choose an account</option>
                         @foreach($accounts as $account)
-                            <option value="{{ $account->iban }}">
+                            <option value="{{ $account->iban }}" @if(old('sender-iban') === $account->iban) {{ 'selected' }} @endif>
                                 {{
                                     $account->name . ' (' .
                                     number_format($account->amount / 100, 2) . ' ' .

@@ -37,7 +37,7 @@
                         <x-input-label for="currency" :value="__('Currency')"/>
                         <x-select id="currency" name="currency">
                             @foreach($cryptoPortfolioItems as $cryptoItem)
-                                <option value="{{ $cryptoItem->currency }}">
+                                <option value="{{ $cryptoItem->currency }}" @if(old('currency') === $cryptoItem->currency) {{ 'selected' }} @endif>
                                     {{
                                         $cryptoItem->currency . ' (' .
                                         number_format($cryptoItem->amount, 4) . ')'

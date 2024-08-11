@@ -25,8 +25,8 @@
                 <div>
                     <x-input-label for="type" :value="__('Account type')"/>
                     <x-select x-model='type' id="type" name="type">
-                        <option value="checking" selected>Checking</option>
-                        <option value="investment" selected>Investment</option>
+                        <option value="checking">Checking</option>
+                        <option value="investment">Investment</option>
                     </x-select>
                     <x-input-error :messages="$errors->get('type')" class="mt-2"/>
                 </div>
@@ -34,10 +34,10 @@
                 <div>
                     <x-input-label for="currency" :value="__('Currency')"/>
                     <x-select id="currency" name="currency">
-                        <option selected>Select a currency</option>
                         @foreach($currencies as $currency)
                             <option :disabled="type === 'investment' && $el.value !== 'USD'"
-                                    :selected="type === 'investment' && $el.value === 'USD'" value="{{ $currency }}">
+                            :selected="(type === 'investment' && $el.value === 'USD') || $el.value === '{{ old('currency') }}'" value="{{ $currency }}"
+                            >
                                 {{ $currency }}
                             </option>
                         @endforeach
