@@ -48,7 +48,7 @@ class StoreCryptoTransactionRequest extends FormRequest
                     $account->user->name !== Auth::user()->name
                 ) {
                     throw ValidationException::withMessages([
-                        'account' => 'Invalid sender account.',
+                        'account' => 'Invalid account.',
                     ]);
                 }
 
