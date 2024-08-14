@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Vite;
 
 class CryptoCurrency extends Model
 {
@@ -17,6 +18,6 @@ class CryptoCurrency extends Model
 
     public function icon(): ?string
     {
-        return 'public/storage/cryptocurrency-' . $this->symbol . '.png';
+        return 'storage/app/public/cryptocurrency-' . $this->symbol . '.png';
     }
 }
