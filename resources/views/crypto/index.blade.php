@@ -29,7 +29,9 @@
                     <x-select id="account" name="account">
                         <option selected>Choose an account</option>
                         @foreach($accounts as $account)
-                            <option value="{{ $account->iban }}" @if(old('account') === $account->iban) {{ 'selected' }} @endif>
+                            <option value="{{ $account->iban }}" @if(old('account') === $account->iban)
+                                {{ 'selected' }}
+                                @endif>
                                 {{
                                     $account->name . ' (' .
                                     number_format($account->amount / 100, 2) . ' ' .
@@ -44,7 +46,9 @@
                     <x-input-label for="currency" :value="__('Currency')"/>
                     <x-select id="currency" name="currency">
                         @foreach($currencies as $currency)
-                            <option value="{{ $currency->symbol }}" @if(old('currency') === $currency->symbol) {{ 'selected' }} @endif>
+                            <option value="{{ $currency->symbol }}" @if(old('currency') === $currency->symbol)
+                                {{ 'selected' }}
+                                @endif>
                                 {{
                                     $currency->symbol . ' (' .
                                     number_format($currency->price, 4) . ' USD)'
@@ -74,7 +78,7 @@
         </x-section-heading>
         <form class="w-fit mx-auto" method="GET" action="{{ route('crypto.index') }}" id="search-form">
             <x-input-label for="q" :value="__('Find by ticker')"/>
-            <div class="flex space-x-6" >
+            <div class="flex space-x-6">
                 <x-text-input id="q" name="q" value="{{ old('q') }}"></x-text-input>
                 <x-primary-button>{{ __('Submit') }}</x-primary-button>
             </div>
@@ -100,7 +104,8 @@
                                 <x-table.row>
                                     <x-table.data>
                                         <div class="flex gap-x-2 w-fit items-center">
-                                            <img src="{{ Vite::asset($currency->icon()) }}" alt="{{ $currency->symbol }} symbol"
+                                            <img src="{{ Vite::asset($currency->icon()) }}"
+                                                 alt="{{ $currency->symbol }} symbol"
                                                  class="w-4 h-4">
                                             {{ $currency->symbol }}
                                         </div>

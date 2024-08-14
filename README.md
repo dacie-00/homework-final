@@ -32,12 +32,15 @@ as the final homework project for Codelex.
 * ```npm run build```
 * ```php artisan migrate```
 * ```php artisan key:generate```
-* Create .env based on .env.example in root directory. In the .env file you need to provide an API key as COIN_MARKET_CAP_API_KEY
+* Create .env based on .env.example in root directory. In the .env file you need to provide an API key as
+  COIN_MARKET_CAP_API_KEY
 
 ## Populating currency data from APIs
+
 * ```php artisan app:fetch-currencies```
 * ```php artisan app:fetch-crypto-currencies```
 * ```php artisan app:fetch-crypto-currency-icons```
 
 ## Starting the site
+
 * ```php artisan serve```

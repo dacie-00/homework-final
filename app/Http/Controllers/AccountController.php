@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeleteAccountRequest;
 use App\Models\Account;
-use App\Models\CryptoCurrency;
 use App\Models\Currency;
 use App\Services\CryptoCurrencyService;
 use Illuminate\Contracts\View\View;

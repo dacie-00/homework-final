@@ -36,7 +36,8 @@
                     <x-select id="currency" name="currency">
                         @foreach($currencies as $currency)
                             <option :disabled="type === 'investment' && $el.value !== 'USD'"
-                            :selected="(type === 'investment' && $el.value === 'USD') || $el.value === '{{ old('currency') }}'" value="{{ $currency }}"
+                                    :selected="(type === 'investment' && $el.value === 'USD') || $el.value === '{{ old('currency') }}'"
+                                    value="{{ $currency }}"
                             >
                                 {{ $currency }}
                             </option>

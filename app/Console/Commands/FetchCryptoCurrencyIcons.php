@@ -5,10 +5,7 @@ namespace App\Console\Commands;
 use App\Models\CryptoCurrency;
 use App\Services\CryptoCurrencyService;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Log;
-use JsonException;
-use Mockery\Exception;
 
 class FetchCryptoCurrencyIcons extends Command
 {

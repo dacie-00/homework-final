@@ -37,7 +37,10 @@
                         <x-input-label for="currency" :value="__('Currency')"/>
                         <x-select id="currency" name="currency">
                             @foreach($cryptoPortfolioItems as $cryptoItem)
-                                <option value="{{ $cryptoItem->currency }}" @if(old('currency') === $cryptoItem->currency) {{ 'selected' }} @endif>
+                                <option
+                                    value="{{ $cryptoItem->currency }}" @if(old('currency') === $cryptoItem->currency)
+                                    {{ 'selected' }}
+                                    @endif>
                                     {{
                                         $cryptoItem->currency . ' (' .
                                         number_format($cryptoItem->amount, 4) . ')'
@@ -88,7 +91,8 @@
                             <x-table.row>
                                 <x-table.data>
                                     <div class="flex gap-x-2 w-fit items-center">
-                                        <img src="{{ Vite::asset($cryptoItem->cryptoCurrency->icon()) }}" alt="{{ $cryptoItem->cryptoCurrency->symbol }} symbol"
+                                        <img src="{{ Vite::asset($cryptoItem->cryptoCurrency->icon()) }}"
+                                             alt="{{ $cryptoItem->cryptoCurrency->symbol }} symbol"
                                              class="w-4 h-4">
                                         {{ $cryptoItem->currency }}
                                     </div>

@@ -54,7 +54,7 @@
                             </x-table.data>
                             <x-table.data>
                                 <a class="text-blue-500 hover:underline"
-                                    href={{route('account.show', ['account' => $account])}}>
+                                   href={{route('account.show', ['account' => $account])}}>
                                     {{ __('View') }}
                                 </a>
                             </x-table.data>
