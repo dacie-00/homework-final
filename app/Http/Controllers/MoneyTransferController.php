@@ -44,9 +44,9 @@ class MoneyTransferController extends Controller
             $receiverAccount->save();
 
             $transfer = MoneyTransfer::query()->create([
-                'amount_sent' => $validated['amount'],
+                'amount_sent' => $validated['amount'] * 100,
                 'currency_sent' => $senderAccount->currency,
-                'amount_received' => $receiveAmount,
+                'amount_received' => $receiveAmount * 100,
                 'currency_received' => $receiverAccount->currency,
                 'note' => $validated['note'],
             ]);
