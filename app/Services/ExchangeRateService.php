@@ -27,5 +27,9 @@ class ExchangeRateService
                 'exchange_rate' => (float)$currencyData->Rate * 100,
             ]);
         }
+        Currency::query()->updateOrCreate([
+            'symbol' => 'EUR',
+            'exchange_rate' => 100,
+        ]);
     }
 }
