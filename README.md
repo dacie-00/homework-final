@@ -28,12 +28,13 @@ as the final homework project for Codelex.
 
 * ```git clone https://github.com/dacie-00/homework-final.git```
 * ```composer install```
-* ```npm install```
-* ```npm run build```
 * ```php artisan migrate```
+* ```php artisan storage:link```
 * Create .env based on .env.example in root directory. In the .env file you need to provide an API key as
   COIN_MARKET_CAP_API_KEY
 * ```php artisan key:generate```
+* ```npm install```
+* ```npm run build```
 
 ## Populating currency data from APIs
 
