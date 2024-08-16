@@ -31,15 +31,16 @@ as the final homework project for Codelex.
 * ```npm install```
 * ```npm run build```
 * ```php artisan migrate```
-* ```php artisan key:generate```
 * Create .env based on .env.example in root directory. In the .env file you need to provide an API key as
   COIN_MARKET_CAP_API_KEY
+* ```php artisan key:generate```
 
 ## Populating currency data from APIs
 
 * ```php artisan app:fetch-currencies```
 * ```php artisan app:fetch-crypto-currencies```
 * ```php artisan app:fetch-crypto-currency-icons```
+* Rerun ```npm run build``` after fetching icons
 
 ## Starting the site
 
